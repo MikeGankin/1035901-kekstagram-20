@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Ганкин](https://up.htmlacademy.ru/javascript/20/user/1035901).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Александрович](https://htmlacademy.ru/profile/id1378855).
 
 ---
 
