@@ -53,8 +53,8 @@ var renderCards = function () {
 
   for (var i = 1; i < 25; i++) {
     var element = template.cloneNode(true);
-    element.querySelector('.picture__img').src = 'photos/' + [i] + '.jpg';
-    pictures.insertAdjacentElement('afterend', element);
+    element.querySelector('.picture__img').src = 'photos/' + i + '.jpg';
+    pictures.insertAdjacentElement('beforebegin', element);
   }
 };
 renderCards();
