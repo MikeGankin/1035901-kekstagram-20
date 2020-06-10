@@ -1,6 +1,6 @@
 'use strict';
 
-var Comments = [
+var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -9,7 +9,7 @@ var Comments = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-var Names = [
+var NAMES = [
   'Миша', 'Андрей', 'Дима', 'Никита', 'Таня', 'Тема'
 ];
 
@@ -31,8 +31,8 @@ var generateComments = function () {
   for (var i = 0; i < getRandomInteger(1, 5); i++) {
     var comment = {
       avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
-      message: getArrayRandElement(Comments),
-      name: getArrayRandElement(Names)
+      message: getArrayRandElement(COMMENTS),
+      name: getArrayRandElement(NAMES)
     };
     comments.push(comment);
   }
