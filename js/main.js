@@ -55,16 +55,24 @@ var generateData = function () {
   return data;
 };
 
-// Рендерим карточки на страницу
-var renderCards = function (data) {
-  var pictures = document.querySelector('.pictures section');
+// Создаем шаблонные элементы с данными
+var createElement = function (data) {
   var template = document.querySelector('#picture').content.querySelector('.picture');
+  var fragment = document.createDocumentFragment();
   for (var i = 0; i < 25; i++) {
     var element = template.cloneNode(true);
     element.querySelector('.picture__img').src = data[i].url;
     element.querySelector('.picture__comments').textContent = data[i].comments.length;
     element.querySelector('.picture__likes').textContent = data[i].likes;
-    pictures.insertAdjacentElement('beforebegin', element);
+    fragment.appendChild(element);
   }
+
+  return fragment;
 };
-renderCards(generateData());
+
+// Рендерим карточки на страницу
+var renderCards = function (fragment) {
+  var pictures = document.querySelector('.pictures');
+  pictures.appendChild(fragment);
+};
+renderCards(createElement(generateData()));
