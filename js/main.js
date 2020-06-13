@@ -89,21 +89,63 @@ var renderCards = function (fragment) {
 };
 renderCards(createElement(generateData()));
 
-// Наполняем большую карточку контентом
-var renderBigCard = function (data) {
+// Генерируем новый аватар комментария
+var generateNewAvatar = function (data) {
+  var newImg = document.createElement('img');
+  newImg.classList.add('social__picture');
+  newImg.alt = 'Аватар комментатора фотографии';
+  newImg.width = '35';
+  newImg.height = '35';
+  newImg.src = data[0].comments[0].avatar;
+
+  return newImg;
+};
+
+// Генерируем новый текст комментария
+var generateNewCommentText = function (data) {
+  var newText = document.createElement('p');
+  newText.classList.add('social__text');
+
+  for (var i = 0; i < socialText.length; i++) {
+    newText.textContent = data[0].comments[i].message;
+  }
+
+  return newText;
+};
+
+// Генерируем новую разметку комментариев под фотографией
+var generateNewComments = function (data, avatar, text) {
+  var dataLength = data[0].comments.length;
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < dataLength; i++) {
+    var newComment = document.createElement('li');
+    newComment.classList.add('social__comment');
+    newComment.appendChild(avatar);
+    newComment.appendChild(text);
+    fragment.appendChild(newComment);
+  }
+
+  return fragment;
+};
+
+
+// Рендерим большую карточку и новые комментарии на страницу
+var renderBigCard = function (data, fragment) {
   bigPicture.classList.remove('hidden');
+  socialCommentCount.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
   bigPictureImg.src = data[0].url;
   likesCount.textContent = data[0].likes;
   commentsCount.textContent = data[0].comments.length;
-  socialPicture.src = data[0].comments[0].avatar;
-  socialCaption.textContent = data[0].description;
-  socialCommentCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
-  document.body.classList.add('modal-open');
-
-  for (var i = 0; i < socialText.length; i++) {
-    socialText[i].textContent = data[0].comments[i].message;
-  }
-
+  socialComments.innerHTML = '';
+  socialComments.appendChild(fragment);
 };
-renderBigCard(generateData());
+renderBigCard(
+    generateData(),
+    generateNewComments(
+        generateData(),
+        generateNewAvatar(generateData()),
+        generateNewCommentText(generateData())
+    )
+);
