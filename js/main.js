@@ -1,5 +1,6 @@
 'use strict';
 
+// Константы
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -8,10 +9,21 @@ var COMMENTS = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
-
 var NAMES = [
   'Миша', 'Андрей', 'Дима', 'Никита', 'Таня', 'Тема'
 ];
+
+// Переменные
+var bigPicture = document.querySelector('.big-picture');
+var bigPictureImg = document.querySelector('.big-picture img');
+var likesCount = document.querySelector('.likes-count');
+var commentsCount = document.querySelector('.comments-count');
+var socialComments = document.querySelector('.social__comments');
+var socialPicture = socialComments.querySelector('.social__picture');
+var socialText = socialComments.querySelectorAll('.social__text');
+var socialCaption = document.querySelector('.social__caption');
+var socialCommentCount = document.querySelector('.social__comment-count');
+var commentsLoader = document.querySelector('.comments-loader');
 
 // Случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -28,7 +40,7 @@ var getArrayRandElement = function (arr) {
 // Генерируем объекты с комментариями к фотографиям
 var generateComments = function () {
   var comments = [];
-  for (var i = 0; i < getRandomInteger(1, 5); i++) {
+  for (var i = 0; i < getRandomInteger(2, 6); i++) {
     var comment = {
       avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
       message: getArrayRandElement(COMMENTS),
@@ -79,17 +91,6 @@ renderCards(createElement(generateData()));
 
 // Наполняем большую карточку контентом
 var renderBigCard = function (data) {
-  var bigPicture = document.querySelector('.big-picture');
-  var bigPictureImg = document.querySelector('.big-picture img');
-  var likesCount = document.querySelector('.likes-count');
-  var commentsCount = document.querySelector('.comments-count');
-  var socialComments = document.querySelector('.social__comments');
-  var socialPicture = socialComments.querySelector('.social__picture');
-  var socialText = socialComments.querySelectorAll('.social__text');
-  var socialCaption = document.querySelector('.social__caption');
-  var socialCommentCount = document.querySelector('.social__comment-count');
-  var commentsLoader = document.querySelector('.comments-loader');
-
   bigPicture.classList.remove('hidden');
   bigPictureImg.src = data[0].url;
   likesCount.textContent = data[0].likes;
@@ -101,7 +102,7 @@ var renderBigCard = function (data) {
   document.body.classList.add('modal-open');
 
   for (var i = 0; i < socialText.length; i++) {
-    socialText[i].textContent = data[0].comments[0].message;
+    socialText[i].textContent = data[0].comments[i].message;
   }
 
 };
