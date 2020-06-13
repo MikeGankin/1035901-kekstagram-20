@@ -76,3 +76,35 @@ var renderCards = function (fragment) {
   pictures.appendChild(fragment);
 };
 renderCards(createElement(generateData()));
+
+// Наполняем большую карточку контентом
+var renderBigCard = function (data) {
+  var bigPicture = document.querySelector('.big-picture');
+  var bigPictureImg = document.querySelector('.big-picture img');
+  var likesCount = document.querySelector('.likes-count');
+  var commentsCount = document.querySelector('.comments-count');
+  var socialComments = document.querySelector('.social__comments');
+  var socialPicture = socialComments.querySelector('.social__picture');
+  var socialText = socialComments.querySelectorAll('.social__text');
+  var socialCaption = document.querySelector('.social__caption');
+  var socialCommentCount = document.querySelector('.social__comment-count');
+  var commentsLoader = document.querySelector('.comments-loader');
+
+  bigPicture.classList.remove('hidden');
+  bigPictureImg.src = data[0].url;
+  likesCount.textContent = data[0].likes;
+  commentsCount.textContent = data[0].comments.length;
+  socialPicture.src = data[0].comments[0].avatar;
+  socialCaption.textContent = data[0].description;
+  socialCommentCount.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
+  document.body.classList.add('modal-open');
+
+  for (var i = 0; i < socialText.length; i++) {
+    socialText[i].textContent = data[0].comments[0].message;
+  }
+
+};
+renderBigCard(generateData());
+
+
