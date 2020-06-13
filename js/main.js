@@ -19,9 +19,6 @@ var bigPictureImg = document.querySelector('.big-picture img');
 var likesCount = document.querySelector('.likes-count');
 var commentsCount = document.querySelector('.comments-count');
 var socialComments = document.querySelector('.social__comments');
-var socialPicture = socialComments.querySelector('.social__picture');
-var socialText = socialComments.querySelectorAll('.social__text');
-var socialCaption = document.querySelector('.social__caption');
 var socialCommentCount = document.querySelector('.social__comment-count');
 var commentsLoader = document.querySelector('.comments-loader');
 
@@ -89,46 +86,24 @@ var renderCards = function (fragment) {
 };
 renderCards(createElement(generateData()));
 
-// Генерируем новый аватар комментария
-var generateNewAvatar = function (data) {
-  var newImg = document.createElement('img');
-  newImg.classList.add('social__picture');
-  newImg.alt = 'Аватар комментатора фотографии';
-  newImg.width = '35';
-  newImg.height = '35';
-  newImg.src = data[0].comments[0].avatar;
-
-  return newImg;
-};
-
-// Генерируем новый текст комментария
-var generateNewCommentText = function (data) {
-  var newText = document.createElement('p');
-  newText.classList.add('social__text');
-
-  for (var i = 0; i < socialText.length; i++) {
-    newText.textContent = data[0].comments[i].message;
-  }
-
-  return newText;
-};
-
 // Генерируем новую разметку комментариев под фотографией
-var generateNewComments = function (data, avatar, text) {
+var generateNewComments = function (data) {
   var dataLength = data[0].comments.length;
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < dataLength; i++) {
     var newComment = document.createElement('li');
     newComment.classList.add('social__comment');
-    newComment.appendChild(avatar);
-    newComment.appendChild(text);
+    var avatar = '<img class="social__picture" src="' +
+        data[0].comments[i].avatar + '"' + 'alt="' +
+        data[0].comments[i].name + '"' + 'width="35" height="35">';
+    var text = '<p class=social__text>' + data[0].comments[i].message + '</p>';
+    newComment.innerHTML = avatar + text;
     fragment.appendChild(newComment);
   }
 
   return fragment;
 };
-
 
 // Рендерим большую карточку и новые комментарии на страницу
 var renderBigCard = function (data, fragment) {
@@ -143,9 +118,5 @@ var renderBigCard = function (data, fragment) {
 };
 renderBigCard(
     generateData(),
-    generateNewComments(
-        generateData(),
-        generateNewAvatar(generateData()),
-        generateNewCommentText(generateData())
-    )
+    generateNewComments(generateData())
 );
