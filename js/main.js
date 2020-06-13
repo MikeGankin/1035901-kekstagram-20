@@ -66,7 +66,6 @@ var createElement = function (data) {
     element.querySelector('.picture__likes').textContent = data[i].likes;
     fragment.appendChild(element);
   }
-<<<<<<< Updated upstream
 
   return fragment;
 };
