@@ -107,11 +107,11 @@ var renderBigCard = function (data) {
   bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
-  bigPictureImg.src = data[0].url;
-  likesCount.textContent = data[0].likes;
-  commentsCount.textContent = data[0].comments.length;
+  bigPictureImg.src = data.url;
+  likesCount.textContent = data.likes;
+  commentsCount.textContent = data.comments.length;
   socialComments.innerHTML = '';
 
-  generateNewComments(generatedData);
+  generateNewComments(data.comments);
 };
-renderBigCard(generatedData);
+renderBigCard(generatedData[0]);
