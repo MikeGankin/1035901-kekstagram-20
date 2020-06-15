@@ -1,5 +1,6 @@
 'use strict';
 
+// Константы
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -8,7 +9,6 @@ var COMMENTS = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
-
 var NAMES = [
   'Миша', 'Андрей', 'Дима', 'Никита', 'Таня', 'Тема'
 ];
@@ -28,7 +28,7 @@ var getArrayRandElement = function (arr) {
 // Генерируем объекты с комментариями к фотографиям
 var generateComments = function () {
   var comments = [];
-  for (var i = 0; i < getRandomInteger(1, 5); i++) {
+  for (var i = 0; i < getRandomInteger(2, 6); i++) {
     var comment = {
       avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
       message: getArrayRandElement(COMMENTS),
@@ -51,9 +51,9 @@ var generateData = function () {
     };
     data.push(post);
   }
-
   return data;
 };
+var generatedData = generateData();
 
 // Создаем шаблонные элементы с данными
 var createElement = function (data) {
@@ -66,7 +66,6 @@ var createElement = function (data) {
     element.querySelector('.picture__likes').textContent = data[i].likes;
     fragment.appendChild(element);
   }
-
   return fragment;
 };
 
@@ -75,4 +74,47 @@ var renderCards = function (fragment) {
   var pictures = document.querySelector('.pictures');
   pictures.appendChild(fragment);
 };
-renderCards(createElement(generateData()));
+renderCards(createElement(generatedData));
+
+// Генерируем новую разметку комментариев под фотографией
+var generateNewComments = function (data) {
+  var socialComments = document.querySelector('.social__comments');
+  var dataLength = data.length;
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < dataLength; i++) {
+    var newComment = document.createElement('li');
+    newComment.classList.add('social__comment');
+    var avatar = '<img class="social__picture" src="' +
+        data[i].avatar + '"' + 'alt="' +
+        data[i].name + '"' + 'width="35" height="35">';
+    var text = '<p class=social__text>' + data[i].message + '</p>';
+    newComment.innerHTML = avatar + text;
+    fragment.appendChild(newComment);
+  }
+  socialComments.appendChild(fragment);
+};
+
+// Рендерим большую карточку и новые комментарии на страницу
+var renderBigCard = function (data) {
+  var bigPicture = document.querySelector('.big-picture');
+  var bigPictureImg = document.querySelector('.big-picture__img img');
+  var likesCount = document.querySelector('.likes-count');
+  var commentsCount = document.querySelector('.comments-count');
+  var socialComments = document.querySelector('.social__comments');
+  var socialCommentCount = document.querySelector('.social__comment-count');
+  var commentsLoader = document.querySelector('.comments-loader');
+  var socialCaption = document.querySelector('.social__caption');
+  document.body.classList.add('modal-open');
+  bigPicture.classList.remove('hidden');
+  socialCommentCount.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
+  bigPictureImg.src = data.url;
+  likesCount.textContent = data.likes;
+  commentsCount.textContent = data.comments.length;
+  socialCaption.textContent = data.description;
+  socialComments.innerHTML = '';
+
+  generateNewComments(data.comments);
+};
+renderBigCard(generatedData[0]);
