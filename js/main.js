@@ -97,10 +97,8 @@ var generateNewComments = function (data) {
 
 // Рендерим большую карточку и новые комментарии на страницу
 var renderBigCard = function (data) {
-  console.log(data);
-
   var bigPicture = document.querySelector('.big-picture');
-  var bigPictureImg = bigPicture.querySelector('img');
+  var bigPictureImg = document.querySelector('.big-picture__img img');
   var likesCount = document.querySelector('.likes-count');
   var commentsCount = document.querySelector('.comments-count');
   var socialComments = document.querySelector('.social__comments');
