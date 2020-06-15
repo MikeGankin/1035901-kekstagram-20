@@ -79,16 +79,16 @@ renderCards(createElement(generatedData));
 // Генерируем новую разметку комментариев под фотографией
 var generateNewComments = function (data) {
   var socialComments = document.querySelector('.social__comments');
-  var dataLength = data[0].comments.length;
+  var dataLength = data.length;
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < dataLength; i++) {
     var newComment = document.createElement('li');
     newComment.classList.add('social__comment');
     var avatar = '<img class="social__picture" src="' +
-        data[0].comments[i].avatar + '"' + 'alt="' +
-        data[0].comments[i].name + '"' + 'width="35" height="35">';
-    var text = '<p class=social__text>' + data[0].comments[i].message + '</p>';
+        data[i].avatar + '"' + 'alt="' +
+        data[i].name + '"' + 'width="35" height="35">';
+    var text = '<p class=social__text>' + data[i].message + '</p>';
     newComment.innerHTML = avatar + text;
     fragment.appendChild(newComment);
   }
