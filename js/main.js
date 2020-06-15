@@ -78,6 +78,7 @@ renderCards(createElement(generatedData));
 
 // Генерируем новую разметку комментариев под фотографией
 var generateNewComments = function (data) {
+  var socialComments = document.querySelector('.social__comments');
   var dataLength = data[0].comments.length;
   var fragment = document.createDocumentFragment();
 
@@ -91,12 +92,11 @@ var generateNewComments = function (data) {
     newComment.innerHTML = avatar + text;
     fragment.appendChild(newComment);
   }
-
-  return fragment;
+  socialComments.appendChild(fragment);
 };
 
 // Рендерим большую карточку и новые комментарии на страницу
-var renderBigCard = function (data, fragment) {
+var renderBigCard = function (data) {
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureImg = document.querySelector('.big-picture img');
   var likesCount = document.querySelector('.likes-count');
@@ -111,9 +111,7 @@ var renderBigCard = function (data, fragment) {
   likesCount.textContent = data[0].likes;
   commentsCount.textContent = data[0].comments.length;
   socialComments.innerHTML = '';
-  socialComments.appendChild(fragment);
+
+  generateNewComments(generatedData);
 };
-renderBigCard(
-    generatedData,
-    generateNewComments(generatedData)
-);
+renderBigCard(generatedData);
