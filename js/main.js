@@ -13,15 +13,6 @@ var NAMES = [
   'Миша', 'Андрей', 'Дима', 'Никита', 'Таня', 'Тема'
 ];
 
-// Переменные
-var bigPicture = document.querySelector('.big-picture');
-var bigPictureImg = document.querySelector('.big-picture img');
-var likesCount = document.querySelector('.likes-count');
-var commentsCount = document.querySelector('.comments-count');
-var socialComments = document.querySelector('.social__comments');
-var socialCommentCount = document.querySelector('.social__comment-count');
-var commentsLoader = document.querySelector('.comments-loader');
-
 // Случайное число от и до
 var getRandomInteger = function (min, max) {
   var randNumber = min + Math.random() * (max + 1 - min);
@@ -60,9 +51,9 @@ var generateData = function () {
     };
     data.push(post);
   }
-
   return data;
 };
+var generatedData = generateData();
 
 // Создаем шаблонные элементы с данными
 var createElement = function (data) {
@@ -75,7 +66,6 @@ var createElement = function (data) {
     element.querySelector('.picture__likes').textContent = data[i].likes;
     fragment.appendChild(element);
   }
-
   return fragment;
 };
 
@@ -84,7 +74,7 @@ var renderCards = function (fragment) {
   var pictures = document.querySelector('.pictures');
   pictures.appendChild(fragment);
 };
-renderCards(createElement(generateData()));
+renderCards(createElement(generatedData));
 
 // Генерируем новую разметку комментариев под фотографией
 var generateNewComments = function (data) {
@@ -107,6 +97,13 @@ var generateNewComments = function (data) {
 
 // Рендерим большую карточку и новые комментарии на страницу
 var renderBigCard = function (data, fragment) {
+  var bigPicture = document.querySelector('.big-picture');
+  var bigPictureImg = document.querySelector('.big-picture img');
+  var likesCount = document.querySelector('.likes-count');
+  var commentsCount = document.querySelector('.comments-count');
+  var socialComments = document.querySelector('.social__comments');
+  var socialCommentCount = document.querySelector('.social__comment-count');
+  var commentsLoader = document.querySelector('.comments-loader');
   bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
@@ -117,6 +114,6 @@ var renderBigCard = function (data, fragment) {
   socialComments.appendChild(fragment);
 };
 renderBigCard(
-    generateData(),
-    generateNewComments(generateData())
+    generatedData,
+    generateNewComments(generatedData)
 );
