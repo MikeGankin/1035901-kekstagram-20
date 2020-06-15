@@ -97,13 +97,16 @@ var generateNewComments = function (data) {
 
 // Рендерим большую карточку и новые комментарии на страницу
 var renderBigCard = function (data) {
+  console.log(data);
+
   var bigPicture = document.querySelector('.big-picture');
-  var bigPictureImg = document.querySelector('.big-picture img');
+  var bigPictureImg = bigPicture.querySelector('img');
   var likesCount = document.querySelector('.likes-count');
   var commentsCount = document.querySelector('.comments-count');
   var socialComments = document.querySelector('.social__comments');
   var socialCommentCount = document.querySelector('.social__comment-count');
   var commentsLoader = document.querySelector('.comments-loader');
+  var socialCaption = document.querySelector('.social__caption');
   document.body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
@@ -111,6 +114,7 @@ var renderBigCard = function (data) {
   bigPictureImg.src = data.url;
   likesCount.textContent = data.likes;
   commentsCount.textContent = data.comments.length;
+  socialCaption.textContent = data.description;
   socialComments.innerHTML = '';
 
   generateNewComments(data.comments);
