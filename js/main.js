@@ -104,6 +104,7 @@ var renderBigCard = function (data) {
   var socialComments = document.querySelector('.social__comments');
   var socialCommentCount = document.querySelector('.social__comment-count');
   var commentsLoader = document.querySelector('.comments-loader');
+  document.body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
