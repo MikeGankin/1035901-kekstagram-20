@@ -12,14 +12,25 @@ var COMMENTS = [
 var NAMES = [
   'Миша', 'Андрей', 'Дима', 'Никита', 'Таня', 'Тема'
 ];
+var ENTER = 13;
+var ESC = 27;
 
-// Случайное число от и до
+// Переменные
+var uploadFile = document.querySelector('#upload-file');
+var uploadCancel = document.querySelector('#upload-cancel');
+var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+// var effectLevelPin = document.querySelector('.effect-level__pin');
+var scaleControlValue = document.querySelector('.scale__control--value');
+var smaller = document.querySelector('.scale__control--smaller');
+var scaler = document.querySelector('.scale__control--bigger');
+
+// Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
   var randNumber = min + Math.random() * (max + 1 - min);
   return Math.floor(randNumber);
 };
 
-// Случайный элемент массива
+// Получаем случайный элемент массива
 var getArrayRandElement = function (arr) {
   var randElement = Math.floor(Math.random() * arr.length);
   return arr[randElement];
@@ -97,7 +108,7 @@ var generateNewComments = function (data) {
 
 // Рендерим большую карточку и новые комментарии на страницу
 var renderBigCard = function (data) {
-  var bigPicture = document.querySelector('.big-picture');
+  // var bigPicture = document.querySelector('.big-picture');
   var bigPictureImg = document.querySelector('.big-picture__img img');
   var likesCount = document.querySelector('.likes-count');
   var commentsCount = document.querySelector('.comments-count');
@@ -105,8 +116,8 @@ var renderBigCard = function (data) {
   var socialCommentCount = document.querySelector('.social__comment-count');
   var commentsLoader = document.querySelector('.comments-loader');
   var socialCaption = document.querySelector('.social__caption');
-  document.body.classList.add('modal-open');
-  bigPicture.classList.remove('hidden');
+  // document.body.classList.add('modal-open');
+  // bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
   bigPictureImg.src = data.url;
@@ -118,3 +129,71 @@ var renderBigCard = function (data) {
   generateNewComments(data.comments);
 };
 renderBigCard(generatedData[0]);
+
+// Обрабатываем нажатия на клавишу Esc
+var onUploadEscPress = function (e) {
+  if (e.keyCode === ESC) {
+    e.preventDefault();
+    closeUpload();
+  }
+};
+
+// Обрабатываем нажатия на клавишу Enter
+var onUploadEnterPress = function (e) {
+  if (e.keyCode === ENTER) {
+    e.preventDefault();
+    closeUpload();
+  }
+};
+
+// Открываем форму загрузки
+var openUpload = function () {
+  imgUploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadEscPress);
+  uploadCancel.addEventListener('keydown', onUploadEnterPress);
+};
+
+// Закрываем форму загрузки
+var closeUpload = function () {
+  imgUploadOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onUploadEscPress);
+  uploadCancel.removeEventListener('keydown', onUploadEnterPress);
+};
+
+// События открытия и закрытия окна загрузки
+uploadFile.addEventListener('change', openUpload);
+uploadCancel.addEventListener('click', closeUpload);
+
+// Задаем размер фотографии по умолчанию
+var setScaleValue = function () {
+  scaleControlValue.setAttribute('value', '100%');
+};
+setScaleValue();
+
+// Уменьшаем размер фотографии
+var decreaseScaleValue = function () {
+  var value = scaleControlValue.value;
+  var NewNumber = Number.parseInt(value, 10) - 25;
+  var newString = String(NewNumber) + '%';
+  scaleControlValue.setAttribute('value', newString);
+};
+
+// Увеличиваем размер фотографии
+var increaseScaleValue = function () {
+  var value = scaleControlValue.value;
+  var NewNumber = Number.parseInt(value, 10) + 25;
+  var newString = String(NewNumber) + '%';
+  scaleControlValue.setAttribute('value', newString);
+};
+
+// События редактирования изображения
+smaller.addEventListener('click', function () {
+  if (scaleControlValue.value === 0 && scaleControlValue.value < 100) {
+    increaseScaleValue();
+  }
+});
+scaler.addEventListener('click', function () {
+  if (scaleControlValue.value === 100 && scaleControlValue.value > 0) {
+    decreaseScaleValue();
+  }
+});
