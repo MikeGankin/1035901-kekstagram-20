@@ -238,6 +238,8 @@ var effectsChanger = function (target) {
 
   if (!target.matches(none)) {
     slider.classList.remove('hidden');
+  } else {
+    imgUploadPreview.className = '';
   }
   if (target.matches(chrome)) {
     imgUploadPreview.className = '';
