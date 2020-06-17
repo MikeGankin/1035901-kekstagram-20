@@ -12,8 +12,6 @@ var COMMENTS = [
 var NAMES = [
   'Миша', 'Андрей', 'Дима', 'Никита', 'Таня', 'Тема'
 ];
-var ENTER = 13;
-var ESC = 27;
 
 // Переменные
 var uploadFile = document.querySelector('#upload-file');
@@ -23,6 +21,8 @@ var smaller = document.querySelector('.scale__control--smaller');
 var scaler = document.querySelector('.scale__control--bigger');
 var imgUploadPreview = document.querySelector('.img-upload__preview img');
 var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+var effectsList = document.querySelector('.img-upload__effects');
+var slider = document.querySelector('.img-upload__effect-level');
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -132,7 +132,7 @@ renderBigCard(generatedData[0]);
 
 // Обрабатываем нажатия на клавишу Esc
 var onUploadEscPress = function (e) {
-  if (e.keyCode === ESC) {
+  if (e.key === 'Escape') {
     e.preventDefault();
     closeUpload();
   }
@@ -140,7 +140,7 @@ var onUploadEscPress = function (e) {
 
 // Обрабатываем нажатия на клавишу Enter
 var onUploadEnterPress = function (e) {
-  if (e.keyCode === ENTER) {
+  if (e.key === 'Enter') {
     e.preventDefault();
     closeUpload();
   }
@@ -161,8 +161,12 @@ var closeUpload = function () {
 };
 
 // События открытия и закрытия окна загрузки
-uploadFile.addEventListener('change', openUpload);
-uploadCancel.addEventListener('click', closeUpload);
+uploadFile.addEventListener('change', function () {
+  openUpload();
+});
+uploadCancel.addEventListener('click', function () {
+  closeUpload();
+});
 
 // Задаем размер фотографии по умолчанию
 var setScaleValue = function () {
@@ -173,49 +177,58 @@ setScaleValue();
 // Уменьшаем размер фотографии
 var decreaseScaleValue = function () {
   var value = scaleControlValue.value;
-  var NewNumber = Number.parseInt(value, 10) - 25;
-  var newString = String(NewNumber) + '%';
-  scaleControlValue.setAttribute('value', newString);
-  imgUploadPreview.style = 'transform: scale(0.' + NewNumber + ')';
+  var newNumber = Number.parseInt(value, 10) - 25;
+  if (newNumber >= 25) {
+    var newString = String(newNumber) + '%';
+    scaleControlValue.setAttribute('value', newString);
+    imgUploadPreview.style = 'transform: scale(0.' + newNumber + ')';
+  }
 };
 
 // Увеличиваем размер фотографии
 var increaseScaleValue = function () {
   var value = scaleControlValue.value;
-  var NewNumber = Number.parseInt(value, 10) + 25;
-  var newString = String(NewNumber) + '%';
-  scaleControlValue.setAttribute('value', newString);
-  if (NewNumber === 100) {
-    imgUploadPreview.style = 'transform: scale(1)';
-  } else {
-    imgUploadPreview.style = 'transform: scale(0.' + NewNumber + ')';
+  var newNumber = Number.parseInt(value, 10) + 25;
+  if (newNumber <= 100) {
+    var newString = String(newNumber) + '%';
+    scaleControlValue.setAttribute('value', newString);
+    if (newNumber === 100) {
+      imgUploadPreview.style = 'transform: scale(1)';
+    } else {
+      imgUploadPreview.style = 'transform: scale(0.' + newNumber + ')';
+    }
   }
 };
 
+// Возвращаем размер по умолчанию
+var resetScaleValue = function () {
+  scaleControlValue.setAttribute('value', '100%');
+  imgUploadPreview.style = '';
+};
+
 // События редактирования размера изображения
-smaller.addEventListener('click', function (e) {
-  if (scaleControlValue.value === '25%') {
-    e.preventDefault();
-  } else {
-    decreaseScaleValue();
-  }
+smaller.addEventListener('click', function () {
+  decreaseScaleValue();
 });
-scaler.addEventListener('click', function (e) {
-  if (scaleControlValue.value === '100%') {
-    e.preventDefault();
-  } else {
-    increaseScaleValue();
-  }
+scaler.addEventListener('click', function () {
+  increaseScaleValue();
+});
+scaleControlValue.addEventListener('click', function () {
+  resetScaleValue();
 });
 
-var effectsList = document.querySelector('.img-upload__effects');
-var slider = document.querySelector('.img-upload__effect-level').classList.add('hidden');
 // var effectsRadio = document.querySelector('.effects__radio');
 // var effectLevelPin = document.querySelector('.effect-level__pin');
 // var effectLevelValue = document.querySelector('.effect-level__value');
 
+// Скрываем слайдер эффектов
+var sliderKeeper = function () {
+  slider.classList.add('hidden');
+};
+sliderKeeper();
+
 // Меняем эффекты на фотографии
-var effectsChanger = function (e) {
+var effectsChanger = function (target) {
   var none = '#effect-none';
   var chrome = '#effect-chrome';
   var sepia = '#effect-sepia';
@@ -223,35 +236,33 @@ var effectsChanger = function (e) {
   var phobos = '#effect-phobos';
   var heat = '#effect-heat';
 
-  if (!e.target.matches(none)) {
+  if (!target.matches(none)) {
     slider.classList.remove('hidden');
-  } else {
-    slider.classList.add('hidden');
-    imgUploadPreview.removeAttribute('class');
   }
-  if (e.target.matches(chrome)) {
+  if (target.matches(chrome)) {
     imgUploadPreview.className = '';
-    imgUploadPreview.classList.toggle('effects__preview--chrome');
+    imgUploadPreview.classList.add('effects__preview--chrome');
   }
-  if (e.target.matches(sepia)) {
+  if (target.matches(sepia)) {
     imgUploadPreview.className = '';
-    imgUploadPreview.classList.toggle('effects__preview--sepia');
+    imgUploadPreview.classList.add('effects__preview--sepia');
   }
-  if (e.target.matches(marvin)) {
+  if (target.matches(marvin)) {
     imgUploadPreview.className = '';
-    imgUploadPreview.classList.toggle('effects__preview--marvin');
+    imgUploadPreview.classList.add('effects__preview--marvin');
   }
-  if (e.target.matches(phobos)) {
+  if (target.matches(phobos)) {
     imgUploadPreview.className = '';
-    imgUploadPreview.classList.toggle('effects__preview--phobos');
+    imgUploadPreview.classList.add('effects__preview--phobos');
   }
-  if (e.target.matches(heat)) {
+  if (target.matches(heat)) {
     imgUploadPreview.className = '';
-    imgUploadPreview.classList.toggle('effects__preview--heat');
+    imgUploadPreview.classList.add('effects__preview--heat');
   }
 };
 
-effectsList.addEventListener('change', function () {
-  effectsChanger();
+effectsList.addEventListener('change', function (e) {
+  var target = e.target;
+  effectsChanger(target);
 });
 
