@@ -18,11 +18,11 @@ var ESC = 27;
 // Переменные
 var uploadFile = document.querySelector('#upload-file');
 var uploadCancel = document.querySelector('#upload-cancel');
-var imgUploadOverlay = document.querySelector('.img-upload__overlay');
-// var effectLevelPin = document.querySelector('.effect-level__pin');
 var scaleControlValue = document.querySelector('.scale__control--value');
 var smaller = document.querySelector('.scale__control--smaller');
 var scaler = document.querySelector('.scale__control--bigger');
+var imgUploadPreview = document.querySelector('.img-upload__preview img');
+var imgUploadOverlay = document.querySelector('.img-upload__overlay');
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -176,6 +176,7 @@ var decreaseScaleValue = function () {
   var NewNumber = Number.parseInt(value, 10) - 25;
   var newString = String(NewNumber) + '%';
   scaleControlValue.setAttribute('value', newString);
+  imgUploadPreview.style = 'transform: scale(0.' + NewNumber + ')';
 };
 
 // Увеличиваем размер фотографии
@@ -184,16 +185,73 @@ var increaseScaleValue = function () {
   var NewNumber = Number.parseInt(value, 10) + 25;
   var newString = String(NewNumber) + '%';
   scaleControlValue.setAttribute('value', newString);
+  if (NewNumber === 100) {
+    imgUploadPreview.style = 'transform: scale(1)';
+  } else {
+    imgUploadPreview.style = 'transform: scale(0.' + NewNumber + ')';
+  }
 };
 
-// События редактирования изображения
-smaller.addEventListener('click', function () {
-  if (scaleControlValue.value === 0 && scaleControlValue.value < 100) {
-    increaseScaleValue();
-  }
-});
-scaler.addEventListener('click', function () {
-  if (scaleControlValue.value === 100 && scaleControlValue.value > 0) {
+// События редактирования размера изображения
+smaller.addEventListener('click', function (e) {
+  if (scaleControlValue.value === '25%') {
+    e.preventDefault();
+  } else {
     decreaseScaleValue();
   }
 });
+scaler.addEventListener('click', function (e) {
+  if (scaleControlValue.value === '100%') {
+    e.preventDefault();
+  } else {
+    increaseScaleValue();
+  }
+});
+
+var effectsList = document.querySelector('.img-upload__effects');
+var slider = document.querySelector('.img-upload__effect-level').classList.add('hidden');
+// var effectsRadio = document.querySelector('.effects__radio');
+// var effectLevelPin = document.querySelector('.effect-level__pin');
+// var effectLevelValue = document.querySelector('.effect-level__value');
+
+// Меняем эффекты на фотографии
+var effectsChanger = function (e) {
+  var none = '#effect-none';
+  var chrome = '#effect-chrome';
+  var sepia = '#effect-sepia';
+  var marvin = '#effect-marvin';
+  var phobos = '#effect-phobos';
+  var heat = '#effect-heat';
+
+  if (!e.target.matches(none)) {
+    slider.classList.remove('hidden');
+  } else {
+    slider.classList.add('hidden');
+    imgUploadPreview.removeAttribute('class');
+  }
+  if (e.target.matches(chrome)) {
+    imgUploadPreview.className = '';
+    imgUploadPreview.classList.toggle('effects__preview--chrome');
+  }
+  if (e.target.matches(sepia)) {
+    imgUploadPreview.className = '';
+    imgUploadPreview.classList.toggle('effects__preview--sepia');
+  }
+  if (e.target.matches(marvin)) {
+    imgUploadPreview.className = '';
+    imgUploadPreview.classList.toggle('effects__preview--marvin');
+  }
+  if (e.target.matches(phobos)) {
+    imgUploadPreview.className = '';
+    imgUploadPreview.classList.toggle('effects__preview--phobos');
+  }
+  if (e.target.matches(heat)) {
+    imgUploadPreview.className = '';
+    imgUploadPreview.classList.toggle('effects__preview--heat');
+  }
+};
+
+effectsList.addEventListener('change', function () {
+  effectsChanger();
+});
+
