@@ -26,6 +26,12 @@ var slider = document.querySelector('.img-upload__effect-level');
 var effectLevelLine = document.querySelector('.effect-level__line');
 var effectLevelPin = document.querySelector('.effect-level__pin');
 var effectLevelDepth = document.querySelector('.effect-level__depth');
+var none = '#effect-none';
+var chrome = '#effect-chrome';
+var sepia = '#effect-sepia';
+var marvin = '#effect-marvin';
+var phobos = '#effect-phobos';
+var heat = '#effect-heat';
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -227,23 +233,46 @@ var sliderKeeper = function () {
 };
 sliderKeeper();
 
+// Получаем позицию пина
+var takePinPosition = function () {
+  var width = effectLevelLine.clientWidth;
+  var depth = effectLevelDepth.clientWidth;
+  var position = (depth / width).toFixed(1);
+  return position;
+};
+
+// Управляем интенсивностью эффектов
+var effectsIntensityChanger = function (intensity) {
+  if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
+    imgUploadPreview.style = 'filter: grayscale(' + intensity + ')';
+  }
+  if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
+    imgUploadPreview.style = 'filter: sepia(' + intensity + ')';
+  }
+  if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
+    imgUploadPreview.style = 'filter: invert(' + intensity + ')';
+  }
+  if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
+    imgUploadPreview.style = 'filter: blur(' + intensity + ')';
+  }
+  if (imgUploadPreview.classList.contains('effects__preview--heat')) {
+    imgUploadPreview.style = 'filter: brightness(' + intensity + ')';
+  }
+};
+
 // Меняем эффекты на фотографии
 var effectsChanger = function (target) {
-  var none = '#effect-none';
-  var chrome = '#effect-chrome';
-  var sepia = '#effect-sepia';
-  var marvin = '#effect-marvin';
-  var phobos = '#effect-phobos';
-  var heat = '#effect-heat';
-
   if (!target.matches(none)) {
     slider.classList.remove('hidden');
     effectLevelPin.addEventListener('mouseup', function () {
-      effectsIntensityChanger(takeElementPosition());
+      effectsIntensityChanger(takePinPosition());
     });
   } else {
     imgUploadPreview.className = '';
     slider.classList.add('hidden');
+    effectLevelPin.removeEventListener('mouseup', function () {
+      effectsIntensityChanger(takePinPosition());
+    });
   }
   if (target.matches(chrome)) {
     imgUploadPreview.className = '';
@@ -272,16 +301,3 @@ effectsList.addEventListener('change', function (e) {
   var target = e.target;
   effectsChanger(target);
 });
-
-// Получаем глубину эффекта
-var takeElementPosition = function () {
-  var width = effectLevelLine.clientWidth;
-  var depth = effectLevelDepth.clientWidth;
-  var position = (depth / width).toFixed(1);
-  return position;
-};
-
-var effectsIntensityChanger = function (intensity) {
-  imgUploadPreview.style = 'filter: grayscale(' + intensity + ')';
-};
-
