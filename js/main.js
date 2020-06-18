@@ -237,61 +237,67 @@ sliderKeeper();
 var takePinPosition = function () {
   var width = effectLevelLine.clientWidth;
   var depth = effectLevelDepth.clientWidth;
-  var position = (depth / width).toFixed(1);
+  var position = (depth / width);
   return position;
 };
 
 // Управляем интенсивностью эффектов
-var effectsIntensityChanger = function (intensity) {
+var effectsIntensityChanger = function () {
+  var fraction = takePinPosition().toFixed(1);
+  var percent = (takePinPosition() * 100).toFixed() + '%';
+  var pixel = (3 / 100) * (takePinPosition() * 100).toFixed() + 'px';
+
   if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
-    imgUploadPreview.style = 'filter: grayscale(' + intensity + ')';
+    imgUploadPreview.style = 'filter: grayscale(' + fraction + ')';
   }
   if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
-    imgUploadPreview.style = 'filter: sepia(' + intensity + ')';
+    imgUploadPreview.style = 'filter: sepia(' + fraction + ')';
   }
   if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
-    imgUploadPreview.style = 'filter: invert(' + intensity + ')';
+    imgUploadPreview.style = 'filter: invert(' + percent + ')';
   }
   if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
-    imgUploadPreview.style = 'filter: blur(' + intensity + ')';
+    imgUploadPreview.style = 'filter: blur(' + pixel + ')';
   }
   if (imgUploadPreview.classList.contains('effects__preview--heat')) {
-    imgUploadPreview.style = 'filter: brightness(' + intensity + ')';
+    imgUploadPreview.style = 'filter: brightness(' + fraction + ')';
   }
+  effectLevelPin.removeEventListener('mouseup', effectsIntensityChanger);
 };
 
 // Меняем эффекты на фотографии
 var effectsChanger = function (target) {
   if (!target.matches(none)) {
     slider.classList.remove('hidden');
-    effectLevelPin.addEventListener('mouseup', function () {
-      effectsIntensityChanger(takePinPosition());
-    });
+    effectLevelPin.addEventListener('mouseup', effectsIntensityChanger);
   } else {
     imgUploadPreview.className = '';
+    imgUploadPreview.style = '';
     slider.classList.add('hidden');
-    effectLevelPin.removeEventListener('mouseup', function () {
-      effectsIntensityChanger(takePinPosition());
-    });
   }
   if (target.matches(chrome)) {
     imgUploadPreview.className = '';
+    imgUploadPreview.style = '';
     imgUploadPreview.classList.add('effects__preview--chrome');
   }
   if (target.matches(sepia)) {
     imgUploadPreview.className = '';
+    imgUploadPreview.style = '';
     imgUploadPreview.classList.add('effects__preview--sepia');
   }
   if (target.matches(marvin)) {
     imgUploadPreview.className = '';
+    imgUploadPreview.style = '';
     imgUploadPreview.classList.add('effects__preview--marvin');
   }
   if (target.matches(phobos)) {
     imgUploadPreview.className = '';
+    imgUploadPreview.style = '';
     imgUploadPreview.classList.add('effects__preview--phobos');
   }
   if (target.matches(heat)) {
     imgUploadPreview.className = '';
+    imgUploadPreview.style = '';
     imgUploadPreview.classList.add('effects__preview--heat');
   }
 };
