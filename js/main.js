@@ -23,9 +23,9 @@ var imgUploadPreview = document.querySelector('.img-upload__preview img');
 var imgUploadOverlay = document.querySelector('.img-upload__overlay');
 var effectsList = document.querySelector('.img-upload__effects');
 var slider = document.querySelector('.img-upload__effect-level');
-var effectLevelLine = document.queryCommandValue('.effect-level__line');
-// var effectLevelPin = document.querySelector('.effect-level__pin');
-// var effectLevelDepth = document.querySelector('.effect-level__depth');
+var effectLevelLine = document.querySelector('.effect-level__line');
+var effectLevelPin = document.querySelector('.effect-level__pin');
+var effectLevelDepth = document.querySelector('.effect-level__depth');
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -238,6 +238,9 @@ var effectsChanger = function (target) {
 
   if (!target.matches(none)) {
     slider.classList.remove('hidden');
+    effectLevelPin.addEventListener('mouseup', function () {
+      effectsIntensityChanger(takeElementPosition());
+    });
   } else {
     imgUploadPreview.className = '';
     slider.classList.add('hidden');
@@ -270,5 +273,15 @@ effectsList.addEventListener('change', function (e) {
   effectsChanger(target);
 });
 
-console.log(effectLevelLine);
-console.log(effectLevelLine.clientWidth);
+// Получаем глубину эффекта
+var takeElementPosition = function () {
+  var width = effectLevelLine.clientWidth;
+  var depth = effectLevelDepth.clientWidth;
+  var position = (depth / width).toFixed(1);
+  return position;
+};
+
+var effectsIntensityChanger = function (intensity) {
+  imgUploadPreview.style = 'filter: grayscale(' + intensity + ')';
+};
+
