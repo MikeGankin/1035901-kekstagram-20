@@ -23,6 +23,9 @@ var imgUploadPreview = document.querySelector('.img-upload__preview img');
 var imgUploadOverlay = document.querySelector('.img-upload__overlay');
 var effectsList = document.querySelector('.img-upload__effects');
 var slider = document.querySelector('.img-upload__effect-level');
+var effectLevelLine = document.queryCommandValue('.effect-level__line');
+// var effectLevelPin = document.querySelector('.effect-level__pin');
+// var effectLevelDepth = document.querySelector('.effect-level__depth');
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -156,6 +159,7 @@ var openUpload = function () {
 // Закрываем форму загрузки
 var closeUpload = function () {
   imgUploadOverlay.classList.add('hidden');
+  uploadFile.value = '';
   document.removeEventListener('keydown', onUploadEscPress);
   uploadCancel.removeEventListener('keydown', onUploadEnterPress);
 };
@@ -217,10 +221,6 @@ scaleControlValue.addEventListener('click', function () {
   resetScaleValue();
 });
 
-// var effectsRadio = document.querySelector('.effects__radio');
-// var effectLevelPin = document.querySelector('.effect-level__pin');
-// var effectLevelValue = document.querySelector('.effect-level__value');
-
 // Скрываем слайдер эффектов
 var sliderKeeper = function () {
   slider.classList.add('hidden');
@@ -240,6 +240,7 @@ var effectsChanger = function (target) {
     slider.classList.remove('hidden');
   } else {
     imgUploadPreview.className = '';
+    slider.classList.add('hidden');
   }
   if (target.matches(chrome)) {
     imgUploadPreview.className = '';
@@ -263,8 +264,11 @@ var effectsChanger = function (target) {
   }
 };
 
+// Событие переключения эффектов
 effectsList.addEventListener('change', function (e) {
   var target = e.target;
   effectsChanger(target);
 });
 
+console.log(effectLevelLine);
+console.log(effectLevelLine.clientWidth);
