@@ -26,12 +26,6 @@ var slider = document.querySelector('.img-upload__effect-level');
 var effectLevelLine = document.querySelector('.effect-level__line');
 var effectLevelPin = document.querySelector('.effect-level__pin');
 var effectLevelDepth = document.querySelector('.effect-level__depth');
-var none = '#effect-none';
-var chrome = '#effect-chrome';
-var sepia = '#effect-sepia';
-var marvin = '#effect-marvin';
-var phobos = '#effect-phobos';
-var heat = '#effect-heat';
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -262,11 +256,17 @@ var effectsIntensityChanger = function () {
   if (imgUploadPreview.classList.contains('effects__preview--heat')) {
     imgUploadPreview.style = 'filter: brightness(' + fraction + ')';
   }
-  effectLevelPin.removeEventListener('mouseup', effectsIntensityChanger);
 };
 
 // Меняем эффекты на фотографии
 var effectsChanger = function (target) {
+  var none = '#effect-none';
+  var chrome = '#effect-chrome';
+  var sepia = '#effect-sepia';
+  var marvin = '#effect-marvin';
+  var phobos = '#effect-phobos';
+  var heat = '#effect-heat';
+
   if (!target.matches(none)) {
     slider.classList.remove('hidden');
     effectLevelPin.addEventListener('mouseup', effectsIntensityChanger);
@@ -305,5 +305,26 @@ var effectsChanger = function (target) {
 // Событие переключения эффектов
 effectsList.addEventListener('change', function (e) {
   var target = e.target;
+  effectLevelPin.removeEventListener('mouseup', effectsIntensityChanger);
   effectsChanger(target);
+});
+
+// Валидация формы
+
+var imgUploadForm = document.querySelector('.img-upload__form');
+var textHashtags = document.querySelector('.text__hashtags');
+// var textDescription = document.querySelector('.text__description');
+
+imgUploadForm.addEventListener('submit', function (e) {
+  // var reg = /^[а-яА-ЯёЁ]+$/;
+
+  if (!textHashtags.value) {
+    e.preventDefault();
+    textHashtags.setCustomValidity('Это обязательное поле!');
+  } else if (!textHashtags.value[0] === '#') {
+    e.preventDefault();
+    textHashtags.setCustomValidity('Хэштэг должен начинаться с решетки!');
+  } else {
+    textHashtags.setCustomValidity('');
+  }
 });
