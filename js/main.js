@@ -314,17 +314,14 @@ effectsList.addEventListener('change', function (e) {
 var imgUploadForm = document.querySelector('.img-upload__form');
 var textHashtags = document.querySelector('.text__hashtags');
 // var textDescription = document.querySelector('.text__description');
+// var reg = /^[0-9a-zA-Zа-яА-Я]\w+/gm;
 
-imgUploadForm.addEventListener('submit', function (e) {
-  // var reg = /^[а-яА-ЯёЁ]+$/;
-
+imgUploadForm.addEventListener('input', function (e) {
   if (!textHashtags.value) {
     e.preventDefault();
     textHashtags.setCustomValidity('Это обязательное поле!');
-  } else if (!textHashtags.value[0] === '#') {
+  } else if (textHashtags.value[0] !== '#') {
     e.preventDefault();
     textHashtags.setCustomValidity('Хэштэг должен начинаться с решетки!');
-  } else {
-    textHashtags.setCustomValidity('');
   }
 });
