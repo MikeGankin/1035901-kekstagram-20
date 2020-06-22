@@ -336,6 +336,8 @@ var hashtagsCustomValidation = function () {
     } else if (hashtagsArr[i].search(reg) === -1) {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Хеш-теги пишутся через пробел и могут состоять только из букв и цифр');
+    } else {
+      textHashtags.setCustomValidity('');
     }
   }
 };
@@ -348,6 +350,8 @@ var descriptionCustomValidation = function () {
     if (descriptionArr.length > 140) {
       textDescription.reportValidity();
       textDescription.setCustomValidity('Количество символов не должно превышать 140');
+    } else {
+      textHashtags.setCustomValidity('');
     }
   }
 };
