@@ -314,17 +314,28 @@ effectsList.addEventListener('change', function (e) {
 var imgUploadForm = document.querySelector('.img-upload__form');
 var textHashtags = document.querySelector('.text__hashtags');
 // var textDescription = document.querySelector('.text__description');
-// var reg = /^[0-9a-zA-Zа-яА-Я]\w+/gm;
+var reg = /^[0-9a-zA-Zа-яА-Я]\w+/gm;
 
-var customValidation = function () {
-  if (!textHashtags.value) {
-    textHashtags.setCustomValidity('Это обязательное поле!');
-  } else if (textHashtags.value[0] !== '#') {
-    textHashtags.setCustomValidity('Хэштэг должен начинаться с решетки!');
-  } else {
-    textHashtags.setCustomValidity('');
+var hashtagsCustomValidation = function () {
+  var hashtagsArr = textHashtags.value.split(' ');
+
+  for (var i = 0; i < hashtagsArr.length; i++) {
+    var stringWithoutSymbol = hashtagsArr[i].substring(1);
+
+    if (hashtagsArr[i][0] !== '#') {
+      // Хэштэг начинается с решетки
+      textHashtags.reportValidity();
+      textHashtags.setCustomValidity('Хэштэг должен начинаться с решетки!');
+    } else if (!stringWithoutSymbol.match(reg)) {
+      // Хэштэг содержит только буквы и цифры
+      textHashtags.reportValidity();
+      textHashtags.setCustomValidity('Хэштэг должен содержать только буквы и цифры!');
+    } else if (hashtagsArr[i].trim().length === 1) {
+      // Хэштэг не может состоять из одного символа
+      textHashtags.reportValidity();
+      textHashtags.setCustomValidity('Хэштэг не может состоять из одного символа!');
+    }
   }
 };
 
-textHashtags.addEventListener('input', customValidation);
-
+textHashtags.addEventListener('input', hashtagsCustomValidation);
