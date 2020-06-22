@@ -165,6 +165,8 @@ var closeUpload = function () {
   uploadFile.value = '';
   document.removeEventListener('keydown', onUploadEscPress);
   uploadCancel.removeEventListener('keydown', onUploadEnterPress);
+  textHashtags.removeEventListener('input', hashtagsCustomValidation);
+  textDescription.removeEventListener('input', descriptionCustomValidation);
 };
 
 // События открытия и закрытия окна загрузки
@@ -321,21 +323,27 @@ var hashtagsCustomValidation = function () {
     if (hashtagsArr[i][0] !== '#') {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Хеш-тег должен начинаться с решётки');
-    } else if (hashtagsArr[i].length > 19) {
+      return;
+    } else if (hashtagsArr[i].length > 20) {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Хеш-тег не должен быть длиннее 20 символов');
+      return;
     } else if (hashtagsArr.length > 5) {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Максимальное количество хеш-тегов 5');
+      return;
     } else if (hashtagsArr[i].length <= 1) {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
+      return;
     } else if (i !== hashtagsArr.indexOf(hashtagsArr[i]) || i !== hashtagsArr.lastIndexOf(hashtagsArr[i])) {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Хеш-теги не должны повторяться');
+      return;
     } else if (hashtagsArr[i].search(reg) === -1) {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Хеш-теги пишутся через пробел и могут состоять только из букв и цифр');
+      return;
     } else {
       textHashtags.setCustomValidity('');
     }
