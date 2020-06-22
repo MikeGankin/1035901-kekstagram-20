@@ -26,6 +26,9 @@ var slider = document.querySelector('.img-upload__effect-level');
 var effectLevelLine = document.querySelector('.effect-level__line');
 var effectLevelPin = document.querySelector('.effect-level__pin');
 var effectLevelDepth = document.querySelector('.effect-level__depth');
+var imgUploadForm = document.querySelector('.img-upload__form');
+var textHashtags = document.querySelector('.text__hashtags');
+var textDescription = document.querySelector('.text__description');
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -135,7 +138,7 @@ renderBigCard(generatedData[0]);
 
 // Обрабатываем нажатия на клавишу Esc
 var onUploadEscPress = function (e) {
-  if (e.key === 'Escape') {
+  if (textHashtags !== document.activeElement && e.key === 'Escape') {
     e.preventDefault();
     closeUpload();
   }
@@ -309,33 +312,38 @@ effectsList.addEventListener('change', function (e) {
   effectsChanger(target);
 });
 
-// Валидация формы
-
-var imgUploadForm = document.querySelector('.img-upload__form');
-var textHashtags = document.querySelector('.text__hashtags');
-// var textDescription = document.querySelector('.text__description');
-var reg = /^[0-9a-zA-Zа-яА-Я]\w+/gm;
-
+// Валидируем хеш-теги
 var hashtagsCustomValidation = function () {
-  var hashtagsArr = textHashtags.value.split(' ');
+  var reg = /^#[0-9a-zA-Zа-яА-Я]$/gm;
+  var hashtagsArr = textHashtags.value.toLowerCase().split(' ');
 
   for (var i = 0; i < hashtagsArr.length; i++) {
-    var stringWithoutSymbol = hashtagsArr[i].substring(1);
-
     if (hashtagsArr[i][0] !== '#') {
-      // Хэштэг начинается с решетки
       textHashtags.reportValidity();
-      textHashtags.setCustomValidity('Хэштэг должен начинаться с решетки!');
-    } else if (!stringWithoutSymbol.match(reg)) {
-      // Хэштэг содержит только буквы и цифры
+      textHashtags.setCustomValidity('Хеш-тег должен начинаться с решётки');
+    } else if (hashtagsArr[i].length > 19) {
       textHashtags.reportValidity();
-      textHashtags.setCustomValidity('Хэштэг должен содержать только буквы и цифры!');
-    } else if (hashtagsArr[i].trim().length === 1) {
-      // Хэштэг не может состоять из одного символа
+      textHashtags.setCustomValidity('Хеш-тег не должен быть длиннее 20 символов');
+    } else if (hashtagsArr.length > 5) {
       textHashtags.reportValidity();
-      textHashtags.setCustomValidity('Хэштэг не может состоять из одного символа!');
+      textHashtags.setCustomValidity('Максимальное количество хеш-тегов 5');
+    } else if (hashtagsArr[i].length <= 1) {
+      textHashtags.reportValidity();
+      textHashtags.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
+    } else if (i !== hashtagsArr.indexOf(hashtagsArr[i]) || i !== hashtagsArr.lastIndexOf(hashtagsArr[i])) {
+      textHashtags.reportValidity();
+      textHashtags.setCustomValidity('Хеш-теги не должны повторяться');
+    } else if (hashtagsArr[i][hashtagsArr[i].length - 1] !== ' ') {
+      textHashtags.reportValidity();
+      textHashtags.setCustomValidity('Пишите хеш-теги через пробел');
+    } else if (hashtagsArr[i].search(reg) === -1) {
+      textHashtags.reportValidity();
+      textHashtags.setCustomValidity('Хеш-теги могут состоять только из букв и цифр');
     }
   }
 };
 
+// Валидируем комментарий
+
+// События валидации
 textHashtags.addEventListener('input', hashtagsCustomValidation);
