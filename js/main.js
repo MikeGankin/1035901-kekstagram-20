@@ -138,7 +138,7 @@ renderBigCard(generatedData[0]);
 
 // Обрабатываем нажатия на клавишу Esc
 var onUploadEscPress = function (e) {
-  if (textHashtags !== document.activeElement && e.key === 'Escape') {
+  if (textHashtags !== document.activeElement && textDescription !== document.activeElement && e.key === 'Escape') {
     e.preventDefault();
     closeUpload();
   }
@@ -341,6 +341,17 @@ var hashtagsCustomValidation = function () {
 };
 
 // Валидируем описание
+var descriptionCustomValidation = function () {
+  var descriptionArr = textDescription.value.toLowerCase();
+
+  for (var i = 0; i < descriptionArr.length; i++) {
+    if (descriptionArr.length > 140) {
+      textDescription.reportValidity();
+      textDescription.setCustomValidity('Количество символов не должно превышать 140');
+    }
+  }
+};
 
 // События валидации
 textHashtags.addEventListener('input', hashtagsCustomValidation);
+textDescription.addEventListener('input', descriptionCustomValidation);
