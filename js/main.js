@@ -316,12 +316,15 @@ var textHashtags = document.querySelector('.text__hashtags');
 // var textDescription = document.querySelector('.text__description');
 // var reg = /^[0-9a-zA-Zа-яА-Я]\w+/gm;
 
-imgUploadForm.addEventListener('input', function (e) {
+var customValidation = function () {
   if (!textHashtags.value) {
-    e.preventDefault();
     textHashtags.setCustomValidity('Это обязательное поле!');
   } else if (textHashtags.value[0] !== '#') {
-    e.preventDefault();
     textHashtags.setCustomValidity('Хэштэг должен начинаться с решетки!');
+  } else {
+    textHashtags.setCustomValidity('');
   }
-});
+};
+
+textHashtags.addEventListener('input', customValidation);
+
