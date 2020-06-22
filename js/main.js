@@ -314,7 +314,7 @@ effectsList.addEventListener('change', function (e) {
 
 // Валидируем хеш-теги
 var hashtagsCustomValidation = function () {
-  var reg = /^#[0-9a-zA-Zа-яА-Я]$/gm;
+  var reg = /^#[0-9a-zA-Zа-яА-Я]+$/gm;
   var hashtagsArr = textHashtags.value.toLowerCase().split(' ');
 
   for (var i = 0; i < hashtagsArr.length; i++) {
@@ -333,17 +333,14 @@ var hashtagsCustomValidation = function () {
     } else if (i !== hashtagsArr.indexOf(hashtagsArr[i]) || i !== hashtagsArr.lastIndexOf(hashtagsArr[i])) {
       textHashtags.reportValidity();
       textHashtags.setCustomValidity('Хеш-теги не должны повторяться');
-    } else if (hashtagsArr[i][hashtagsArr[i].length - 1] !== ' ') {
-      textHashtags.reportValidity();
-      textHashtags.setCustomValidity('Пишите хеш-теги через пробел');
     } else if (hashtagsArr[i].search(reg) === -1) {
       textHashtags.reportValidity();
-      textHashtags.setCustomValidity('Хеш-теги могут состоять только из букв и цифр');
+      textHashtags.setCustomValidity('Хеш-теги пишутся через пробел и могут состоять только из букв и цифр');
     }
   }
 };
 
-// Валидируем комментарий
+// Валидируем описание
 
 // События валидации
 textHashtags.addEventListener('input', hashtagsCustomValidation);
