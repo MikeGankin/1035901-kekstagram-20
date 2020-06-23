@@ -136,6 +136,18 @@ var renderBigCard = function (data) {
 };
 renderBigCard(generatedData[0]);
 
+// Обрабатываем открытие формы загрузки фото
+var onUploadChangeHandler = function () {
+  openUpload();
+};
+
+// Открываем форму загрузки
+var openUpload = function () {
+  imgUploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadEscPress);
+  uploadCancel.addEventListener('keydown', onUploadEnterPress);
+};
+
 // Обрабатываем нажатия на клавишу Esc
 var onUploadEscPress = function (e) {
   if (textHashtags !== document.activeElement && textDescription !== document.activeElement && e.key === 'Escape') {
@@ -152,11 +164,9 @@ var onUploadEnterPress = function (e) {
   }
 };
 
-// Открываем форму загрузки
-var openUpload = function () {
-  imgUploadOverlay.classList.remove('hidden');
-  document.addEventListener('keydown', onUploadEscPress);
-  uploadCancel.addEventListener('keydown', onUploadEnterPress);
+// Обрабатываем клик на кнопку 'закрыть'
+var onUploadCancelClick = function () {
+  closeUpload();
 };
 
 // Закрываем форму загрузки
@@ -170,12 +180,8 @@ var closeUpload = function () {
 };
 
 // События открытия и закрытия окна загрузки
-uploadFile.addEventListener('change', function () {
-  openUpload();
-});
-uploadCancel.addEventListener('click', function () {
-  closeUpload();
-});
+uploadFile.addEventListener('change', onUploadChangeHandler);
+uploadCancel.addEventListener('click', onUploadCancelClick);
 
 // Задаем размер фотографии по умолчанию
 var setScaleValue = function () {
@@ -209,21 +215,12 @@ var increaseScaleValue = function () {
   }
 };
 
-// Возвращаем размер по умолчанию
-var resetScaleValue = function () {
-  scaleControlValue.setAttribute('value', '100%');
-  imgUploadPreview.style = '';
-};
-
 // События редактирования размера изображения
 smaller.addEventListener('click', function () {
   decreaseScaleValue();
 });
 scaler.addEventListener('click', function () {
   increaseScaleValue();
-});
-scaleControlValue.addEventListener('click', function () {
-  resetScaleValue();
 });
 
 // Скрываем слайдер эффектов
@@ -318,10 +315,11 @@ effectsList.addEventListener('change', function (e) {
 var hashtagsCustomValidation = function () {
   var reg = /^#[0-9a-zA-Zа-яА-Я]+$/;
   var hashtagsArr = textHashtags.value.trim().toLowerCase().split(' ');
-  console.log(hashtagsArr);
 
   for (var i = 0; i < hashtagsArr.length; i++) {
-    if (hashtagsArr[i][0] !== '#') {
+    if (hashtagsArr[i] === '') {
+      continue;
+    } else if (hashtagsArr[i][0] !== '#') {
       textHashtags.setCustomValidity('Хеш-тег должен начинаться с решётки');
       textHashtags.reportValidity();
       return;
@@ -345,8 +343,6 @@ var hashtagsCustomValidation = function () {
       textHashtags.setCustomValidity('Хеш-теги пишутся через пробел и могут состоять только из букв и цифр');
       textHashtags.reportValidity();
       return;
-    } else if (hashtagsArr[i] === '') {
-      continue;
     } else {
       textHashtags.setCustomValidity('');
     }
