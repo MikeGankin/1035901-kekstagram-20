@@ -183,6 +183,7 @@ var onUploadCancelClick = function () {
 var closeUpload = function () {
   imgUploadOverlay.classList.add('hidden');
   uploadFile.value = '';
+  effectsReset();
   document.removeEventListener('keydown', onUploadEscPress);
   uploadCancel.removeEventListener('keydown', onUploadEnterPress);
   uploadCancel.removeEventListener('click', onUploadCancelClick);
@@ -285,9 +286,8 @@ var effectsChanger = function (target) {
     slider.classList.remove('hidden');
     effectLevelPin.addEventListener('mouseup', effectsIntensityChanger);
   } else {
-    imgUploadPreview.className = '';
-    imgUploadPreview.style = '';
-    slider.classList.add('hidden');
+    effectsReset();
+    sliderKeeper();
   }
   if (target.matches(chrome)) {
     imgUploadPreview.className = '';
@@ -295,25 +295,27 @@ var effectsChanger = function (target) {
     imgUploadPreview.classList.add('effects__preview--chrome');
   }
   if (target.matches(sepia)) {
-    imgUploadPreview.className = '';
-    imgUploadPreview.style = '';
+    effectsReset();
     imgUploadPreview.classList.add('effects__preview--sepia');
   }
   if (target.matches(marvin)) {
-    imgUploadPreview.className = '';
-    imgUploadPreview.style = '';
+    effectsReset();
     imgUploadPreview.classList.add('effects__preview--marvin');
   }
   if (target.matches(phobos)) {
-    imgUploadPreview.className = '';
-    imgUploadPreview.style = '';
+    effectsReset();
     imgUploadPreview.classList.add('effects__preview--phobos');
   }
   if (target.matches(heat)) {
-    imgUploadPreview.className = '';
-    imgUploadPreview.style = '';
+    effectsReset();
     imgUploadPreview.classList.add('effects__preview--heat');
   }
+};
+
+// Сбрасываем эффект
+var effectsReset = function () {
+  imgUploadPreview.className = '';
+  imgUploadPreview.style = '';
 };
 
 // Обрабатываем переключение эффектов
