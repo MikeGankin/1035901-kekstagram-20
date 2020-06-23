@@ -177,6 +177,8 @@ var closeUpload = function () {
   uploadCancel.removeEventListener('keydown', onUploadEnterPress);
   textHashtags.removeEventListener('input', hashtagsCustomValidation);
   textDescription.removeEventListener('input', descriptionCustomValidation);
+  uploadFile.removeEventListener('change', onUploadChangeHandler);
+  uploadCancel.removeEventListener('click', onUploadCancelClick);
 };
 
 // События открытия и закрытия окна загрузки
