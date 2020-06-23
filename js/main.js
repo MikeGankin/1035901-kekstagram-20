@@ -317,10 +317,11 @@ effectsList.addEventListener('change', function (e) {
 // Валидируем хеш-теги
 var hashtagsCustomValidation = function () {
   var reg = /^#[0-9a-zA-Zа-яА-Я]+$/;
-  var hashtagsArr = textHashtags.value.toLowerCase().split(' ');
+  var hashtagsArr = textHashtags.value.trim().toLowerCase().split(' ');
+  console.log(hashtagsArr);
 
   for (var i = 0; i < hashtagsArr.length; i++) {
-    if (hashtagsArr[0][0] !== '#') {
+    if (hashtagsArr[i][0] !== '#') {
       textHashtags.setCustomValidity('Хеш-тег должен начинаться с решётки');
       textHashtags.reportValidity();
       return;
@@ -344,6 +345,8 @@ var hashtagsCustomValidation = function () {
       textHashtags.setCustomValidity('Хеш-теги пишутся через пробел и могут состоять только из букв и цифр');
       textHashtags.reportValidity();
       return;
+    } else if (hashtagsArr[i] === '') {
+      continue;
     } else {
       textHashtags.setCustomValidity('');
     }
