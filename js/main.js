@@ -26,7 +26,6 @@ var slider = document.querySelector('.img-upload__effect-level');
 var effectLevelLine = document.querySelector('.effect-level__line');
 var effectLevelPin = document.querySelector('.effect-level__pin');
 var effectLevelDepth = document.querySelector('.effect-level__depth');
-var imgUploadForm = document.querySelector('.img-upload__form');
 var textHashtags = document.querySelector('.text__hashtags');
 var textDescription = document.querySelector('.text__description');
 
@@ -136,17 +135,28 @@ var renderBigCard = function (data) {
 };
 renderBigCard(generatedData[0]);
 
-// Обрабатываем открытие формы загрузки фото
-var onUploadChangeHandler = function () {
-  openUpload();
-};
-
 // Открываем форму загрузки
 var openUpload = function () {
   imgUploadOverlay.classList.remove('hidden');
+  // События нажатия на клавиши
   document.addEventListener('keydown', onUploadEscPress);
   uploadCancel.addEventListener('keydown', onUploadEnterPress);
+  // Событие закрытия окна загрузки
+  uploadCancel.addEventListener('click', onUploadCancelClick);
+  // События валидации
+  textHashtags.addEventListener('input', hashtagsCustomValidation);
+  textDescription.addEventListener('input', descriptionCustomValidation);
+  // Событие переключения эффектов
+  effectsList.addEventListener('change', effectsChangerHandler);
+  // События редактирования размера изображения
+  smaller.addEventListener('click', decreaseScaleValueHandler);
+  scaler.addEventListener('click', increaseScaleValueHandler);
 };
+
+// Событие открытия формы загрузки
+uploadFile.addEventListener('change', function () {
+  openUpload();
+});
 
 // Обрабатываем нажатия на клавишу Esc
 var onUploadEscPress = function (e) {
@@ -175,15 +185,13 @@ var closeUpload = function () {
   uploadFile.value = '';
   document.removeEventListener('keydown', onUploadEscPress);
   uploadCancel.removeEventListener('keydown', onUploadEnterPress);
+  uploadCancel.removeEventListener('click', onUploadCancelClick);
   textHashtags.removeEventListener('input', hashtagsCustomValidation);
   textDescription.removeEventListener('input', descriptionCustomValidation);
-  uploadFile.removeEventListener('change', onUploadChangeHandler);
-  uploadCancel.removeEventListener('click', onUploadCancelClick);
+  effectsList.addEventListener('change', effectsChangerHandler);
+  smaller.removeEventListener('click', decreaseScaleValueHandler);
+  scaler.removeEventListener('click', increaseScaleValueHandler);
 };
-
-// События открытия и закрытия окна загрузки
-uploadFile.addEventListener('change', onUploadChangeHandler);
-uploadCancel.addEventListener('click', onUploadCancelClick);
 
 // Задаем размер фотографии по умолчанию
 var setScaleValue = function () {
@@ -202,6 +210,16 @@ var decreaseScaleValue = function () {
   }
 };
 
+// Обрабатываем клик по кнопке уменьшения
+var decreaseScaleValueHandler = function () {
+  decreaseScaleValue();
+};
+
+// Обрабатываем клик по кнопке увеличения
+var increaseScaleValueHandler = function () {
+  increaseScaleValue();
+};
+
 // Увеличиваем размер фотографии
 var increaseScaleValue = function () {
   var value = scaleControlValue.value;
@@ -216,14 +234,6 @@ var increaseScaleValue = function () {
     }
   }
 };
-
-// События редактирования размера изображения
-smaller.addEventListener('click', function () {
-  decreaseScaleValue();
-});
-scaler.addEventListener('click', function () {
-  increaseScaleValue();
-});
 
 // Скрываем слайдер эффектов
 var sliderKeeper = function () {
@@ -306,12 +316,12 @@ var effectsChanger = function (target) {
   }
 };
 
-// Событие переключения эффектов
-effectsList.addEventListener('change', function (e) {
+// Обрабатываем переключение эффектов
+var effectsChangerHandler = function (e) {
   var target = e.target;
   effectLevelPin.removeEventListener('mouseup', effectsIntensityChanger);
   effectsChanger(target);
-});
+};
 
 // Валидируем хеш-теги
 var hashtagsCustomValidation = function () {
@@ -364,7 +374,3 @@ var descriptionCustomValidation = function () {
     }
   }
 };
-
-// События валидации
-textHashtags.addEventListener('input', hashtagsCustomValidation);
-textDescription.addEventListener('input', descriptionCustomValidation);
