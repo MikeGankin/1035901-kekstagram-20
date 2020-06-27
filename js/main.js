@@ -28,6 +28,8 @@ var effectLevelPin = document.querySelector('.effect-level__pin');
 var effectLevelDepth = document.querySelector('.effect-level__depth');
 var textHashtags = document.querySelector('.text__hashtags');
 var textDescription = document.querySelector('.text__description');
+var bigPicture = document.querySelector('.big-picture');
+var pictures = document.querySelector('.pictures');
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -87,7 +89,6 @@ var createElement = function (data) {
 
 // Рендерим карточки на страницу
 var renderCards = function (fragment) {
-  var pictures = document.querySelector('.pictures');
   pictures.appendChild(fragment);
 };
 renderCards(createElement(generatedData));
@@ -113,7 +114,6 @@ var generateNewComments = function (data) {
 
 // Рендерим большую карточку и новые комментарии на страницу
 var renderBigCard = function (data) {
-  // var bigPicture = document.querySelector('.big-picture');
   var bigPictureImg = document.querySelector('.big-picture__img img');
   var likesCount = document.querySelector('.likes-count');
   var commentsCount = document.querySelector('.comments-count');
@@ -121,8 +121,8 @@ var renderBigCard = function (data) {
   var socialCommentCount = document.querySelector('.social__comment-count');
   var commentsLoader = document.querySelector('.comments-loader');
   var socialCaption = document.querySelector('.social__caption');
-  // document.body.classList.add('modal-open');
-  // bigPicture.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
   bigPictureImg.src = data.url;
@@ -130,10 +130,8 @@ var renderBigCard = function (data) {
   commentsCount.textContent = data.comments.length;
   socialCaption.textContent = data.description;
   socialComments.innerHTML = '';
-
   generateNewComments(data.comments);
 };
-renderBigCard(generatedData[0]);
 
 // Открываем форму загрузки
 var openUpload = function () {
@@ -376,3 +374,10 @@ var descriptionCustomValidation = function () {
     }
   }
 };
+
+var picturesHandler = function (e) {
+  var target = e.target.closest('a');
+  renderBigCard(generatedData[0]);
+};
+
+pictures.addEventListener('click', picturesHandler);
