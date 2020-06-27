@@ -79,6 +79,7 @@ var createElement = function (data) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < 25; i++) {
     var element = template.cloneNode(true);
+    element.setAttribute('order', i);
     element.querySelector('.picture__img').src = data[i].url;
     element.querySelector('.picture__comments').textContent = data[i].comments.length;
     element.querySelector('.picture__likes').textContent = data[i].likes;
@@ -377,7 +378,7 @@ var descriptionCustomValidation = function () {
 
 var picturesHandler = function (e) {
   var target = e.target.closest('a');
-  renderBigCard(generatedData[0]);
+  renderBigCard(generatedData[target.getAttribute('order')]);
 };
 
 pictures.addEventListener('click', picturesHandler);
