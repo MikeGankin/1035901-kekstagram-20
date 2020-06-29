@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var pictures = document.querySelector('.pictures');
+  var generatedData = window.data.generatedData;
+
   // Создаем шаблонные элементы с данными
   var createElement = function (data) {
     var template = document.querySelector('#picture').content.querySelector('.picture');
@@ -35,8 +38,14 @@
     socialComments.appendChild(fragment);
   };
 
+  // Рендерим карточки на страницу
+  var renderCards = function (fragment) {
+    pictures.appendChild(fragment);
+  };
+  renderCards(createElement(generatedData));
+
   window.gallery = {
-    createElement: createElement(),
-    generateNewComments: generateNewComments()
+    generateNewComments: generateNewComments,
+    pictures: pictures
   };
 })();
