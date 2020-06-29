@@ -3,9 +3,7 @@
 (function () {
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
-  var generateNewComments = window.gallery.generateNewComments;
-  var generatedData = window.data.generatedData;
-  var pictures = window.picture.pictures;
+
 
   // Рендерим большую карточку и новые комментарии на страницу
   var renderBigCard = function (data) {

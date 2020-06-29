@@ -56,9 +56,8 @@
     }
     return data;
   };
-  var generatedData = generateData();
 
   window.data = {
-    generatedData: generatedData
+    generateData: generateData
   };
 })();
