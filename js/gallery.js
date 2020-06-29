@@ -36,7 +36,7 @@
   };
 
   window.gallery = {
-    createElement: createElement,
-    generateNewComments: generateNewComments
+    createElement: createElement(),
+    generateNewComments: generateNewComments()
   };
 })();
