@@ -28,6 +28,9 @@ var effectLevelPin = document.querySelector('.effect-level__pin');
 var effectLevelDepth = document.querySelector('.effect-level__depth');
 var textHashtags = document.querySelector('.text__hashtags');
 var textDescription = document.querySelector('.text__description');
+var bigPicture = document.querySelector('.big-picture');
+var pictures = document.querySelector('.pictures');
+var bigPictureCancel = document.querySelector('.big-picture__cancel');
 
 // Получаем случайное число от и до
 var getRandomInteger = function (min, max) {
@@ -77,6 +80,7 @@ var createElement = function (data) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < 25; i++) {
     var element = template.cloneNode(true);
+    element.setAttribute('data-order', i);
     element.querySelector('.picture__img').src = data[i].url;
     element.querySelector('.picture__comments').textContent = data[i].comments.length;
     element.querySelector('.picture__likes').textContent = data[i].likes;
@@ -87,7 +91,6 @@ var createElement = function (data) {
 
 // Рендерим карточки на страницу
 var renderCards = function (fragment) {
-  var pictures = document.querySelector('.pictures');
   pictures.appendChild(fragment);
 };
 renderCards(createElement(generatedData));
@@ -113,7 +116,6 @@ var generateNewComments = function (data) {
 
 // Рендерим большую карточку и новые комментарии на страницу
 var renderBigCard = function (data) {
-  // var bigPicture = document.querySelector('.big-picture');
   var bigPictureImg = document.querySelector('.big-picture__img img');
   var likesCount = document.querySelector('.likes-count');
   var commentsCount = document.querySelector('.comments-count');
@@ -121,8 +123,7 @@ var renderBigCard = function (data) {
   var socialCommentCount = document.querySelector('.social__comment-count');
   var commentsLoader = document.querySelector('.comments-loader');
   var socialCaption = document.querySelector('.social__caption');
-  // document.body.classList.add('modal-open');
-  // bigPicture.classList.remove('hidden');
+  showCard();
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
   bigPictureImg.src = data.url;
@@ -130,10 +131,32 @@ var renderBigCard = function (data) {
   commentsCount.textContent = data.comments.length;
   socialCaption.textContent = data.description;
   socialComments.innerHTML = '';
-
   generateNewComments(data.comments);
 };
-renderBigCard(generatedData[0]);
+
+// Показываем карточку в разметке
+var showCard = function () {
+  document.body.classList.add('modal-open');
+  bigPicture.classList.remove('hidden');
+  document.addEventListener('keydown', onPictureEscPress);
+  bigPictureCancel.addEventListener('click', hideCard);
+};
+
+// Скрываем карточку из разметки
+var hideCard = function () {
+  document.body.classList.remove('modal-open');
+  bigPicture.classList.add('hidden');
+  bigPictureCancel.removeEventListener('click', hideCard);
+  document.removeEventListener('keydown', onPictureEscPress);
+};
+
+// Обрабатываем нажатия на клавишу Esc на фотографии
+var onPictureEscPress = function (e) {
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    hideCard();
+  }
+};
 
 // Открываем форму загрузки
 var openUpload = function () {
@@ -158,7 +181,7 @@ uploadFile.addEventListener('change', function () {
   openUpload();
 });
 
-// Обрабатываем нажатия на клавишу Esc
+// Обрабатываем нажатия на клавишу Esc в форме
 var onUploadEscPress = function (e) {
   if (textHashtags !== document.activeElement && textDescription !== document.activeElement && e.key === 'Escape') {
     e.preventDefault();
@@ -376,3 +399,10 @@ var descriptionCustomValidation = function () {
     }
   }
 };
+
+// Реализуем показ всех фотографий
+var picturesHandler = function (e) {
+  var target = e.target.closest('.picture');
+  renderBigCard(generatedData[target.dataset.order]);
+};
+pictures.addEventListener('click', picturesHandler);
