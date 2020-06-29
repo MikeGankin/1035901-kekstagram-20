@@ -30,10 +30,8 @@
   // Реализуем показ всех фотографий
   var picturesHandler = function (e) {
     var target = e.target.closest('.picture');
-    if (target !== null) {
+    if (target) {
       renderBigCard(generatedData[target.dataset.order]);
-    } else {
-      return;
     }
   };
   pictures.addEventListener('click', picturesHandler);
