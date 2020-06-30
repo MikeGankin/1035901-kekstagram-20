@@ -181,8 +181,6 @@
     var width = effectLevelLine.clientWidth;
     var depth = effectLevelDepth.clientWidth;
     var position = (depth / width);
-    console.log(depth);
-
     return position;
   };
 
@@ -258,6 +256,12 @@
       } else {
         textHashtags.setCustomValidity('');
       }
+    }
+  };
+
+  window.form = {
+    changeEffect: function () {
+      effectsIntensityChanger(takePinPosition());
     }
   };
 })();
