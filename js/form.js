@@ -15,7 +15,6 @@
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
   var slider = document.querySelector('.img-upload__effect-level');
-  var effectLevelHandler = window.moveBy.effectLevelHandler;
 
   // Открываем форму загрузки
   var openUpload = function () {
@@ -166,7 +165,7 @@
 
     if (!target.matches(none)) {
       slider.classList.remove('hidden');
-      effectLevelPin.addEventListener('mousedown', effectLevelHandler);
+      effectLevelPin.addEventListener('mousedown', effectLevelChanger);
     } else {
       effectsReset();
       sliderKeeper();
