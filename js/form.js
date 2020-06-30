@@ -136,7 +136,7 @@
     if (!target.matches(none)) {
       slider.classList.remove('hidden');
       effectLevelPin.addEventListener('mousedown', effectLevelHandler);
-
+      effectsIntensityChanger(takePinPosition());
     } else {
       effectsReset();
       sliderKeeper();
@@ -181,12 +181,13 @@
     var width = effectLevelLine.clientWidth;
     var depth = effectLevelDepth.clientWidth;
     var position = (depth / width);
+    console.log(depth);
+
     return position;
   };
-  var pinPosition = takePinPosition();
 
   // Управляем интенсивностью эффектов
-  var effectsIntensityChanger = function () {
+  var effectsIntensityChanger = function (pinPosition) {
     var fraction = pinPosition.toFixed(1);
     var percent = (pinPosition * 100).toFixed() + '%';
     var pixel = (3 / 100) * (pinPosition * 100).toFixed() + 'px';
@@ -207,7 +208,6 @@
       imgUploadPreview.style = 'filter: brightness(' + fraction + ')';
     }
   };
-  effectsIntensityChanger();
 
   // Валидируем хеш-теги
   var hashtagsCustomValidation = function () {
