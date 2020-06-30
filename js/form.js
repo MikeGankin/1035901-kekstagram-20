@@ -136,6 +136,7 @@
     if (!target.matches(none)) {
       slider.classList.remove('hidden');
       effectLevelPin.addEventListener('mousedown', effectLevelHandler);
+
     } else {
       effectsReset();
       sliderKeeper();
@@ -161,8 +162,6 @@
       effectsReset();
       imgUploadPreview.classList.add('effects__preview--heat');
     }
-
-    effectsIntensityChanger();
   };
 
   // Сбрасываем эффект
@@ -174,7 +173,6 @@
   // Обрабатываем переключение эффектов
   var effectsChangerHandler = function (e) {
     var target = e.target;
-    effectLevelPin.removeEventListener('mouseup', effectLevelHandler);
     effectsChanger(target);
   };
 
@@ -185,12 +183,13 @@
     var position = (depth / width);
     return position;
   };
+  var pinPosition = takePinPosition();
 
   // Управляем интенсивностью эффектов
   var effectsIntensityChanger = function () {
-    var fraction = takePinPosition().toFixed(1);
-    var percent = (takePinPosition() * 100).toFixed() + '%';
-    var pixel = (3 / 100) * (takePinPosition() * 100).toFixed() + 'px';
+    var fraction = pinPosition.toFixed(1);
+    var percent = (pinPosition * 100).toFixed() + '%';
+    var pixel = (3 / 100) * (pinPosition * 100).toFixed() + 'px';
 
     if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
       imgUploadPreview.style = 'filter: grayscale(' + fraction + ')';
@@ -208,6 +207,7 @@
       imgUploadPreview.style = 'filter: brightness(' + fraction + ')';
     }
   };
+  effectsIntensityChanger();
 
   // Валидируем хеш-теги
   var hashtagsCustomValidation = function () {
