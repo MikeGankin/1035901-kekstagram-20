@@ -2,14 +2,8 @@
 (function () {
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelPin = document.querySelector('.effect-level__pin');
-  var effectLevelDepth = document.querySelector('.effect-level__depth');
 
-  // var effectLevelHandler = function () {
-
-  // };
-
-
-  effectLevelPin.addEventListener('mousedown', function (e) {
+  var effectLevelHandler = function (e) {
     e.preventDefault();
 
     var width = effectLevelLine.clientWidth;
@@ -35,14 +29,14 @@
 
       var totalCord = effectLevelPin.offsetLeft - shift.x;
 
-      if (totalCord <= width) {
-        effectLevelPin.style.left = totalCord + 'px';
+      if (totalCord < 0) {
+        return;
       }
       if (totalCord === 0) {
         effectLevelPin.style.left = '0';
       }
-      if (totalCord < 0) {
-        effectLevelPin.style.left = '';
+      if (totalCord <= width) {
+        effectLevelPin.style.left = totalCord + 'px';
       }
     };
 
@@ -63,5 +57,9 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  });
+  };
+
+  window.move = {
+    effectLevelHandler: effectLevelHandler
+  };
 })();
