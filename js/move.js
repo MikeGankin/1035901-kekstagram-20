@@ -64,8 +64,6 @@
   };
 
   window.move = {
-    effectLevelHandler: function () {
-      effectLevelHandler();
-    }
+    effectLevelHandler: effectLevelHandler
   };
 })();
