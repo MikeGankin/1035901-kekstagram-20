@@ -15,7 +15,6 @@
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
   var slider = document.querySelector('.img-upload__effect-level');
-  var effectLevelHandler = window.move.effectLevelHandler;
 
   // Открываем форму загрузки
   var openUpload = function () {
@@ -119,10 +118,10 @@
   };
 
   // Скрываем слайдер эффектов
-  var sliderKeeper = function () {
+  var keepSlider = function () {
     slider.classList.add('hidden');
   };
-  sliderKeeper();
+  keepSlider();
 
   // Меняем эффекты на фотографии
   var effectsChanger = function (target) {
@@ -135,15 +134,14 @@
 
     if (!target.matches(none)) {
       slider.classList.remove('hidden');
-      effectLevelPin.addEventListener('mousedown', effectLevelHandler);
+      effectLevelPin.addEventListener('mousedown', window.move.effectLevelHandler);
       effectsIntensityChanger(takePinPosition());
     } else {
       effectsReset();
-      sliderKeeper();
+      keepSlider();
     }
     if (target.matches(chrome)) {
-      imgUploadPreview.className = '';
-      imgUploadPreview.style = '';
+      effectsReset();
       imgUploadPreview.classList.add('effects__preview--chrome');
     }
     if (target.matches(sepia)) {
@@ -168,6 +166,8 @@
   var effectsReset = function () {
     imgUploadPreview.className = '';
     imgUploadPreview.style = '';
+    effectLevelPin.style.left = '453px';
+    effectLevelDepth.style.width = '453px';
   };
 
   // Обрабатываем переключение эффектов
@@ -260,7 +260,7 @@
   };
 
   window.form = {
-    changeEffect: function () {
+    effectsIntensityChanger: function () {
       effectsIntensityChanger(takePinPosition());
     }
   };

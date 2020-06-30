@@ -3,7 +3,6 @@
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
-  var changeEffect = window.form.changeEffect;
 
   var effectLevelHandler = function (e) {
     e.preventDefault();
@@ -42,7 +41,7 @@
         effectLevelPin.style.left = totalCord + 'px';
         effectLevelDepth.style.width = totalCord + 'px';
       }
-      changeEffect();
+      window.form.effectsIntensityChanger();
     };
 
     var onMouseUp = function (upEvt) {
@@ -65,6 +64,8 @@
   };
 
   window.move = {
-    effectLevelHandler: effectLevelHandler,
+    effectLevelHandler: function () {
+      effectLevelHandler();
+    }
   };
 })();
