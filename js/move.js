@@ -47,8 +47,8 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      effectLevelPin.removeEventListener('mousemove', onMouseMove);
+      effectLevelPin.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
@@ -59,8 +59,8 @@
       }
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    effectLevelPin.addEventListener('mousemove', onMouseMove);
+    effectLevelPin.addEventListener('mouseup', onMouseUp);
   };
 
   window.move = {
