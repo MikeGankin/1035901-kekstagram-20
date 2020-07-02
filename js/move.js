@@ -3,6 +3,7 @@
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
+  var effectRange = document.querySelector('.img-upload__effect-level');
 
   var effectLevelHandler = function (e) {
     e.preventDefault();
@@ -41,14 +42,14 @@
         effectLevelPin.style.left = totalCord + 'px';
         effectLevelDepth.style.width = totalCord + 'px';
       }
-      window.form.effectsIntensityChanger();
+      window.form.changeEffectsIntensity();
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      effectLevelPin.removeEventListener('mousemove', onMouseMove);
-      effectLevelPin.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
@@ -59,8 +60,8 @@
       }
     };
 
-    effectLevelPin.addEventListener('mousemove', onMouseMove);
-    effectLevelPin.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
   window.move = {

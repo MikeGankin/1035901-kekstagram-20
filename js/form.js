@@ -28,7 +28,7 @@
     textHashtags.addEventListener('input', hashtagsCustomValidation);
     textDescription.addEventListener('input', descriptionCustomValidation);
     // Событие переключения эффектов
-    effectsList.addEventListener('change', effectsChangerHandler);
+    effectsList.addEventListener('change', changeEffectsHandler);
     // События редактирования размера изображения
     smaller.addEventListener('click', decreaseScaleValueHandler);
     scaler.addEventListener('click', increaseScaleValueHandler);
@@ -70,7 +70,7 @@
     uploadCancel.removeEventListener('click', onUploadCancelClick);
     textHashtags.removeEventListener('input', hashtagsCustomValidation);
     textDescription.removeEventListener('input', descriptionCustomValidation);
-    effectsList.addEventListener('change', effectsChangerHandler);
+    effectsList.addEventListener('change', changeEffectsHandler);
     smaller.removeEventListener('click', decreaseScaleValueHandler);
     scaler.removeEventListener('click', increaseScaleValueHandler);
   };
@@ -124,7 +124,7 @@
   keepSlider();
 
   // Меняем эффекты на фотографии
-  var effectsChanger = function (target) {
+  var changeEffects = function (target) {
     var none = '#effect-none';
     var chrome = '#effect-chrome';
     var sepia = '#effect-sepia';
@@ -132,13 +132,13 @@
     var phobos = '#effect-phobos';
     var heat = '#effect-heat';
 
+    effectsReset();
+
     if (!target.matches(none)) {
       slider.classList.remove('hidden');
-      effectsReset();
       effectLevelPin.addEventListener('mousedown', window.move.effectLevelHandler);
-      effectsIntensityChanger(takePinPosition());
+      changeEffectsIntensity(takePinPosition());
     } else {
-      effectsReset();
       keepSlider();
     }
     if (target.matches(chrome)) {
@@ -167,9 +167,9 @@
   };
 
   // Обрабатываем переключение эффектов
-  var effectsChangerHandler = function (e) {
+  var changeEffectsHandler = function (e) {
     var target = e.target;
-    effectsChanger(target);
+    changeEffects(target);
   };
 
   // Получаем позицию пина
@@ -181,7 +181,8 @@
   };
 
   // Управляем интенсивностью эффектов
-  var effectsIntensityChanger = function (pinPosition) {
+  var changeEffectsIntensity = function () {
+    var pinPosition = takePinPosition();
     var fraction = pinPosition.toFixed(1);
     var percent = (pinPosition * 100).toFixed() + '%';
     var pixel = (3 / 100) * (pinPosition * 100).toFixed() + 'px';
@@ -257,8 +258,6 @@
   };
 
   window.form = {
-    effectsIntensityChanger: function () {
-      effectsIntensityChanger(takePinPosition());
-    }
+    changeEffectsIntensity: changeEffectsIntensity
   };
 })();
