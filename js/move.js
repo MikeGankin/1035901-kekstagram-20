@@ -3,7 +3,6 @@
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
-  var effectRange = document.querySelector('.img-upload__effect-level');
 
   var effectLevelHandler = function (e) {
     e.preventDefault();
