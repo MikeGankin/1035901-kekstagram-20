@@ -5,7 +5,6 @@
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
   var pictures = window.gallery.pictures;
   var generatedData = window.data.generatedData;
-  var generateNewComments = window.gallery.generateNewComments;
 
   // Рендерим большую карточку и новые комментарии на страницу
   var renderBigCard = function (data) {
@@ -24,7 +23,7 @@
     commentsCount.textContent = data.comments.length;
     socialCaption.textContent = data.description;
     socialComments.innerHTML = '';
-    generateNewComments(data.comments);
+    window.gallery.generateNewComments(data.comments);
   };
 
   // Реализуем показ всех фотографий
