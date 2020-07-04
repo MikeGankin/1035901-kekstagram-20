@@ -7,6 +7,7 @@
   };
   var onSuccess = function (data) {
     console.log(data);
+    return data;
   };
 
   window.load(onSuccess, onError);
