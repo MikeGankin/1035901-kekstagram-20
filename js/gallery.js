@@ -2,13 +2,13 @@
 
 (function () {
   var pictures = document.querySelector('.pictures');
-  var generatedData = window.data.generatedData;
+  var generatedData = window.data.serverData;
 
   // Создаем шаблонные элементы с данными
   var createElement = function (data) {
     var template = document.querySelector('#picture').content.querySelector('.picture');
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < 25; i++) {
+    for (var i = 0; i < data.length; i++) {
       var element = template.cloneNode(true);
       element.setAttribute('data-order', i);
       element.querySelector('.picture__img').src = data[i].url;

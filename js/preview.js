@@ -4,7 +4,7 @@
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
   var pictures = window.gallery.pictures;
-  var generatedData = window.data.generatedData;
+  var generatedData = window.data.serverData;
 
   // Рендерим большую карточку и новые комментарии на страницу
   var renderBigCard = function (data) {
