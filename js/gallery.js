@@ -2,7 +2,7 @@
 
 (function () {
   var pictures = document.querySelector('.pictures');
-  var generatedData = window.data.serverData;
+  var generatedData = window.data.generatedData;
 
   // Создаем шаблонные элементы с данными
   var createElement = function (data) {
@@ -22,10 +22,9 @@
   // Генерируем новую разметку комментариев под фотографией
   var generateNewComments = function (data) {
     var socialComments = document.querySelector('.social__comments');
-    var dataLength = data.length;
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < dataLength; i++) {
+    for (var i = 0; i < data.length; i++) {
       var newComment = document.createElement('li');
       newComment.classList.add('social__comment');
       var avatar = '<img class="social__picture" src="' +

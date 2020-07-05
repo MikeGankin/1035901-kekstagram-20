@@ -7,12 +7,17 @@
   };
   var onSuccess = function (data) {
     console.log(data);
-    return data;
+
+    var generateData = function () {
+      var serverData = data;
+      return serverData;
+    };
+    var generatedData = generateData();
+
+    window.data = {
+      generatedData: generatedData
+    };
   };
 
   window.load(onSuccess, onError);
-
-  window.data = {
-    serverData: onSuccess
-  };
 })();
