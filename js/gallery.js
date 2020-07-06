@@ -2,10 +2,8 @@
 
 (function () {
   var pictures = document.querySelector('.pictures');
-  var generatedData = window.data.generatedData;
 
-  // Создаем шаблонные элементы с данными
-  var createElement = function (data) {
+  window.createElement = function (data) {
     var template = document.querySelector('#picture').content.querySelector('.picture');
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < data.length; i++) {
@@ -20,7 +18,7 @@
   };
 
   // Генерируем новую разметку комментариев под фотографией
-  var generateNewComments = function (data) {
+  window.generateNewComments = function (data) {
     var socialComments = document.querySelector('.social__comments');
     var fragment = document.createDocumentFragment();
 
@@ -38,13 +36,11 @@
   };
 
   // Рендерим карточки на страницу
-  var renderCards = function (fragment) {
+  window.renderCards = function (fragment) {
     pictures.appendChild(fragment);
   };
-  renderCards(createElement(generatedData));
 
   window.gallery = {
-    generateNewComments: generateNewComments,
     pictures: pictures
   };
 })();

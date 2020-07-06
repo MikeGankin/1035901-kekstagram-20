@@ -3,11 +3,9 @@
 (function () {
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
-  var pictures = window.gallery.pictures;
-  var generatedData = window.data.onSuccess;
 
   // Рендерим большую карточку и новые комментарии на страницу
-  var renderBigCard = function (data) {
+  window.renderBigCard = function (data) {
     var bigPictureImg = document.querySelector('.big-picture__img img');
     var likesCount = document.querySelector('.likes-count');
     var commentsCount = document.querySelector('.comments-count');
@@ -23,17 +21,8 @@
     commentsCount.textContent = data.comments.length;
     socialCaption.textContent = data.description;
     socialComments.innerHTML = '';
-    window.gallery.generateNewComments(data.comments);
+    window.generateNewComments(data.comments);
   };
-
-  // Реализуем показ всех фотографий
-  var picturesHandler = function (e) {
-    var target = e.target.closest('.picture');
-    if (target) {
-      renderBigCard(generatedData[target.dataset.order]);
-    }
-  };
-  pictures.addEventListener('click', picturesHandler);
 
   // Показываем карточку в разметке
   var showCard = function () {
