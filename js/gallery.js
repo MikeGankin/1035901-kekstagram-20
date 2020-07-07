@@ -2,7 +2,7 @@
 
 (function () {
   var pictures = document.querySelector('.pictures');
-
+  // Генерируем шаблонные элементы
   window.createElement = function (data) {
     var template = document.querySelector('#picture').content.querySelector('.picture');
     var fragment = document.createDocumentFragment();
@@ -13,8 +13,8 @@
       element.querySelector('.picture__comments').textContent = data[i].comments.length;
       element.querySelector('.picture__likes').textContent = data[i].likes;
       fragment.appendChild(element);
+      pictures.appendChild(fragment);
     }
-    return fragment;
   };
 
   // Генерируем новую разметку комментариев под фотографией
@@ -33,11 +33,6 @@
       fragment.appendChild(newComment);
     }
     socialComments.appendChild(fragment);
-  };
-
-  // Рендерим карточки на страницу
-  window.renderCards = function (fragment) {
-    pictures.appendChild(fragment);
   };
 
   window.gallery = {

@@ -10,7 +10,7 @@
     console.log(data);
 
     // Формируем разметку фотографий
-    window.renderCards(window.createElement(data));
+    window.createElement(data);
 
     // Реализуем показ всех фотографий
     var picturesHandler = function (e) {
