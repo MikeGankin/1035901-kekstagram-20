@@ -3,12 +3,10 @@
 (function () {
   // Получаем данные с сервера
   var onError = function (message) {
-    console.error(message);
+    throw new Error(message);
   };
 
   var onSuccess = function (data) {
-    console.log(data);
-
     // Формируем разметку фотографий
     window.gallery.createGalleryElement(data);
 
