@@ -5,7 +5,7 @@
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
 
   // Рендерим большую карточку и новые комментарии на страницу
-  window.renderBigCard = function (data) {
+  var renderBigCard = function (data) {
     var bigPictureImg = document.querySelector('.big-picture__img img');
     var likesCount = document.querySelector('.likes-count');
     var commentsCount = document.querySelector('.comments-count');
@@ -21,7 +21,7 @@
     commentsCount.textContent = data.comments.length;
     socialCaption.textContent = data.description;
     socialComments.innerHTML = '';
-    window.generateNewComments(data.comments);
+    window.gallery.generateNewComments(data);
   };
 
   // Показываем карточку в разметке
@@ -46,5 +46,9 @@
       e.preventDefault();
       hideCard();
     }
+  };
+
+  window.preview = {
+    renderBigCard: renderBigCard
   };
 })();

@@ -10,13 +10,13 @@
     console.log(data);
 
     // Формируем разметку фотографий
-    window.createElement(data);
+    window.gallery.createGalleryElement(data);
 
     // Реализуем показ всех фотографий
     var picturesHandler = function (e) {
       var target = e.target.closest('.picture');
       if (target) {
-        window.renderBigCard(data[target.dataset.order]);
+        window.preview.renderBigCard(data[target.dataset.order]);
       }
     };
 

@@ -3,7 +3,7 @@
 (function () {
   var pictures = document.querySelector('.pictures');
   // Генерируем шаблонные элементы
-  window.createElement = function (data) {
+  var createGalleryElement = function (data) {
     var template = document.querySelector('#picture').content.querySelector('.picture');
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < data.length; i++) {
@@ -18,24 +18,26 @@
   };
 
   // Генерируем новую разметку комментариев под фотографией
-  window.generateNewComments = function (data) {
+  var generateNewComments = function (data) {
     var socialComments = document.querySelector('.social__comments');
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < data.length; i++) {
+    var comments = data.comments;
+    for (var i = 0; i < comments.length; i++) {
       var newComment = document.createElement('li');
       newComment.classList.add('social__comment');
-      var avatar = '<img class="social__picture" src="' +
-          data[i].avatar + '"' + 'alt="' +
-          data[i].name + '"' + 'width="35" height="35">';
-      var text = '<p class=social__text>' + data[i].message + '</p>';
-      newComment.innerHTML = avatar + text;
       fragment.appendChild(newComment);
+      var avatar = '<img class="social__picture" src="' +
+          comments[i].avatar + '"' + 'alt="' +
+          comments[i].name + '"' + 'width="35" height="35">';
+      var text = '<p class=social__text>' + comments[i].message + '</p>';
+      newComment.innerHTML = avatar + text;
     }
     socialComments.appendChild(fragment);
   };
 
   window.gallery = {
-    pictures: pictures
+    pictures: pictures,
+    generateNewComments: generateNewComments,
+    createGalleryElement: createGalleryElement
   };
 })();
