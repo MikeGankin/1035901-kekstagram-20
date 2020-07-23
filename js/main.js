@@ -2,11 +2,11 @@
 
 (function () {
   // Получаем данные с сервера
-  var onError = function (message) {
+  var onLoadError = function (message) {
     throw new Error(message);
   };
 
-  var onSuccess = function (data) {
+  var onLoadSuccess = function (data) {
     // Формируем разметку фотографий
     window.gallery.createGalleryElement(data);
 
@@ -22,5 +22,5 @@
     window.gallery.pictures.addEventListener('click', picturesHandler);
   };
 
-  window.load(onSuccess, onError);
+  window.load(onLoadSuccess, onLoadError);
 })();

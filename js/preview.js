@@ -49,6 +49,7 @@
   };
 
   window.preview = {
-    renderBigCard: renderBigCard
+    renderBigCard: renderBigCard,
+    bigPicture: bigPicture
   };
 })();

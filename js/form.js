@@ -15,6 +15,8 @@
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
   var slider = document.querySelector('.img-upload__effect-level');
+  var form = document.querySelector('.img-upload__form');
+  var main = document.querySelector('main');
 
   // Открываем форму загрузки
   var openUpload = function () {
@@ -38,6 +40,69 @@
   uploadFile.addEventListener('change', function () {
     openUpload();
   });
+
+  // Передаем данные из формы для отправки на сервер
+  form.addEventListener('submit', function (e) {
+    window.upload(new FormData(form), function onSuccess() {
+      createSuccessMessage();
+    }, function onError() {
+      createErrorMessage();
+    });
+    closeUpload();
+    e.preventDefault();
+  });
+
+  // Генерируем сообщение об успешной отправке данных
+  var createSuccessMessage = function () {
+    var section = document.querySelector('.success');
+    var successButton = document.querySelector('.success__button');
+    var template = document.querySelector('#success').content.querySelector('.success');
+    var element = template.cloneNode(true);
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(element);
+    main.appendChild(fragment);
+
+    // Закрываем сообщение нажатием на кнопку
+    successButton.addEventListener('click', function () {
+      main.removeChild(section);
+    });
+
+    // Закрываем сообщение нажатием на Esc
+    var onSuccessMessageEscPres = function (e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        main.removeChild(section);
+        document.removeEventListener('keydown', onSuccessMessageEscPres);
+      }
+    };
+    document.addEventListener('keydown', onSuccessMessageEscPres);
+  };
+
+  // Генерируем сообщение об ошибке отправки данных
+  var createErrorMessage = function () {
+    var section = document.querySelector('.error');
+    var errorButton = document.querySelector('.error__button');
+    var template = document.querySelector('#error').content.querySelector('.error');
+    var element = template.cloneNode(true);
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(element);
+    main.appendChild(fragment);
+
+    // Закрываем сообщение нажатием на кнопку
+    errorButton.addEventListener('click', function () {
+      main.removeChild(section);
+    });
+
+    // Закрываем сообщение нажатием на Esc
+    var onErrorMessageEscPres = function (e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        main.removeChild(section);
+        document.removeEventListener('keydown', onErrorMessageEscPres);
+      }
+    };
+    document.addEventListener('keydown', onErrorMessageEscPres);
+  };
 
   // Обрабатываем нажатия на клавишу Esc в форме
   var onUploadEscPress = function (e) {
@@ -63,7 +128,8 @@
   // Закрываем форму загрузки
   var closeUpload = function () {
     imgUploadOverlay.classList.add('hidden');
-    uploadFile.value = '';
+    textHashtags.value = '';
+    textDescription.value = '';
     effectsReset();
     document.removeEventListener('keydown', onUploadEscPress);
     uploadCancel.removeEventListener('keydown', onUploadEnterPress);
@@ -258,6 +324,7 @@
   };
 
   window.form = {
-    changeEffectsIntensity: changeEffectsIntensity
+    changeEffectsIntensity: changeEffectsIntensity,
+    closeUpload: closeUpload
   };
 })();
