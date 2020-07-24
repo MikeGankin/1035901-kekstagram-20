@@ -54,6 +54,7 @@
     e.preventDefault();
   });
 
+  // Генерируем сообщение пользователю
   var createResponseMessage = function (template) {
     var element = template.cloneNode(true);
     var fragment = document.createDocumentFragment();
@@ -62,15 +63,16 @@
 
     // Закрываем сообщение по клику на кнопку
     var popupClass = template.className;
-    var closeButton = template.querySelector('button');
+    var popup = document.querySelector('.' + popupClass);
+    var closeButton = popup.querySelector('button');
     closeButton.addEventListener('click', function () {
-      main.removeChild(document.querySelector('.' + popupClass));
+      main.removeChild(popup);
     });
 
     // Закрываем сообщение по клику в свободную область
     var onDocumentMouseUp = function (e) {
-      if (e.target === template) {
-        main.removeChild(fragment);
+      if (e.target === popup) {
+        main.removeChild(popup);
         document.removeEventListener('click', onDocumentMouseUp);
         document.removeEventListener('keydown', onMessageEscPres);
       }
@@ -81,7 +83,7 @@
     var onMessageEscPres = function (e) {
       if (e.key === 'Escape') {
         e.preventDefault();
-        main.removeChild(fragment);
+        main.removeChild(popup);
         document.removeEventListener('click', onDocumentMouseUp);
         document.removeEventListener('keydown', onMessageEscPres);
       }
