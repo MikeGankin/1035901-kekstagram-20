@@ -47,8 +47,9 @@
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     window.upload(new FormData(form), function onSuccess() {
       createResponseMessage(successTemplate);
-    }, function onError() {
+    }, function onError(response) {
       createResponseMessage(errorTemplate);
+      throw new Error(response);
     });
     closeUpload();
     e.preventDefault();
