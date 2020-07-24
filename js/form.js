@@ -68,6 +68,8 @@
     var closeButton = popup.querySelector('button');
     closeButton.addEventListener('click', function () {
       main.removeChild(popup);
+      document.removeEventListener('click', onDocumentMouseUp);
+      document.removeEventListener('keydown', onMessageEscPres);
     });
 
     // Закрываем сообщение по клику в свободную область
@@ -185,7 +187,6 @@
     var marvin = '#effect-marvin';
     var phobos = '#effect-phobos';
     var heat = '#effect-heat';
-
     effectsReset();
 
     if (!target.matches(none)) {
@@ -257,6 +258,10 @@
     if (imgUploadPreview.classList.contains('effects__preview--heat')) {
       imgUploadPreview.style = 'filter: brightness(' + brightnessValue + ')';
     }
+
+    var effectLevelValue = document.querySelector('.effect-level__value');
+    effectLevelValue.value = '50';
+    console.log(effectLevelValue.value);
   };
 
   // Валидируем хеш-теги
