@@ -54,8 +54,6 @@
 
   // Генерируем сообщение об успешной отправке данных
   var createSuccessMessage = function () {
-    var section = document.querySelector('.success');
-    var successButton = document.querySelector('.success__button');
     var template = document.querySelector('#success').content.querySelector('.success');
     var element = template.cloneNode(true);
     var fragment = document.createDocumentFragment();
@@ -63,15 +61,28 @@
     main.appendChild(fragment);
 
     // Закрываем сообщение нажатием на кнопку
+    var section = document.querySelector('.success');
+    var successButton = document.querySelector('.success__button');
     successButton.addEventListener('click', function () {
       main.removeChild(section);
     });
+
+    // Закрываем сообщение по клику в свободную область
+    var onDocumentMouseUp = function (e) {
+      if (section.contains(e.target)) {
+        main.removeChild(section);
+        document.removeEventListener('mouseup', onDocumentMouseUp);
+        document.removeEventListener('keydown', onSuccessMessageEscPres);
+      }
+    };
+    document.addEventListener('mouseup', onDocumentMouseUp);
 
     // Закрываем сообщение нажатием на Esc
     var onSuccessMessageEscPres = function (e) {
       if (e.key === 'Escape') {
         e.preventDefault();
         main.removeChild(section);
+        document.removeEventListener('mouseup', onDocumentMouseUp);
         document.removeEventListener('keydown', onSuccessMessageEscPres);
       }
     };
@@ -80,8 +91,6 @@
 
   // Генерируем сообщение об ошибке отправки данных
   var createErrorMessage = function () {
-    var section = document.querySelector('.error');
-    var errorButton = document.querySelector('.error__button');
     var template = document.querySelector('#error').content.querySelector('.error');
     var element = template.cloneNode(true);
     var fragment = document.createDocumentFragment();
@@ -89,15 +98,28 @@
     main.appendChild(fragment);
 
     // Закрываем сообщение нажатием на кнопку
+    var section = document.querySelector('.error');
+    var errorButton = document.querySelector('.error__button');
     errorButton.addEventListener('click', function () {
       main.removeChild(section);
     });
+
+    // Закрываем сообщение по клику в свободную область
+    var onDocumentMouseUp = function (e) {
+      if (section.contains(e.target)) {
+        main.removeChild(section);
+        document.removeEventListener('mouseup', onDocumentMouseUp);
+        document.removeEventListener('keydown', onErrorMessageEscPres);
+      }
+    };
+    document.addEventListener('mouseup', onDocumentMouseUp);
 
     // Закрываем сообщение нажатием на Esc
     var onErrorMessageEscPres = function (e) {
       if (e.key === 'Escape') {
         e.preventDefault();
         main.removeChild(section);
+        document.removeEventListener('mouseup', onDocumentMouseUp);
         document.removeEventListener('keydown', onErrorMessageEscPres);
       }
     };
