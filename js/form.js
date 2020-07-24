@@ -260,8 +260,8 @@
     }
 
     var effectLevelValue = document.querySelector('.effect-level__value');
-    effectLevelValue.value = '50';
-    console.log(effectLevelValue.value);
+    var newValue = (pinPosition * 100).toFixed();
+    effectLevelValue.setAttribute('value', newValue);
   };
 
   // Валидируем хеш-теги
