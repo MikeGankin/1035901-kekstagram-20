@@ -43,87 +43,50 @@
 
   // Передаем данные из формы для отправки на сервер
   form.addEventListener('submit', function (e) {
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     window.upload(new FormData(form), function onSuccess() {
-      createSuccessMessage();
+      createResponseMessage(successTemplate);
     }, function onError() {
-      createErrorMessage();
+      createResponseMessage(errorTemplate);
     });
     closeUpload();
     e.preventDefault();
   });
 
-  // Генерируем сообщение об успешной отправке данных
-  var createSuccessMessage = function () {
-    var template = document.querySelector('#success').content.querySelector('.success');
+  var createResponseMessage = function (template) {
     var element = template.cloneNode(true);
     var fragment = document.createDocumentFragment();
     fragment.appendChild(element);
     main.appendChild(fragment);
 
-    // Закрываем сообщение нажатием на кнопку
-    var section = document.querySelector('.success');
-    var successButton = document.querySelector('.success__button');
-    successButton.addEventListener('click', function () {
-      main.removeChild(section);
+    // Закрываем сообщение по клику на кнопку
+    var popupClass = template.className;
+    var closeButton = template.querySelector('button');
+    closeButton.addEventListener('click', function () {
+      main.removeChild(document.querySelector('.' + popupClass));
     });
 
     // Закрываем сообщение по клику в свободную область
     var onDocumentMouseUp = function (e) {
-      if (section.contains(e.target)) {
-        main.removeChild(section);
-        document.removeEventListener('mouseup', onDocumentMouseUp);
-        document.removeEventListener('keydown', onSuccessMessageEscPres);
+      if (e.target === template) {
+        main.removeChild(fragment);
+        document.removeEventListener('click', onDocumentMouseUp);
+        document.removeEventListener('keydown', onMessageEscPres);
       }
     };
-    document.addEventListener('mouseup', onDocumentMouseUp);
+    document.addEventListener('click', onDocumentMouseUp);
 
     // Закрываем сообщение нажатием на Esc
-    var onSuccessMessageEscPres = function (e) {
+    var onMessageEscPres = function (e) {
       if (e.key === 'Escape') {
         e.preventDefault();
-        main.removeChild(section);
-        document.removeEventListener('mouseup', onDocumentMouseUp);
-        document.removeEventListener('keydown', onSuccessMessageEscPres);
+        main.removeChild(fragment);
+        document.removeEventListener('click', onDocumentMouseUp);
+        document.removeEventListener('keydown', onMessageEscPres);
       }
     };
-    document.addEventListener('keydown', onSuccessMessageEscPres);
-  };
-
-  // Генерируем сообщение об ошибке отправки данных
-  var createErrorMessage = function () {
-    var template = document.querySelector('#error').content.querySelector('.error');
-    var element = template.cloneNode(true);
-    var fragment = document.createDocumentFragment();
-    fragment.appendChild(element);
-    main.appendChild(fragment);
-
-    // Закрываем сообщение нажатием на кнопку
-    var section = document.querySelector('.error');
-    var errorButton = document.querySelector('.error__button');
-    errorButton.addEventListener('click', function () {
-      main.removeChild(section);
-    });
-
-    // Закрываем сообщение по клику в свободную область
-    var onDocumentMouseUp = function (e) {
-      if (section.contains(e.target)) {
-        main.removeChild(section);
-        document.removeEventListener('mouseup', onDocumentMouseUp);
-        document.removeEventListener('keydown', onErrorMessageEscPres);
-      }
-    };
-    document.addEventListener('mouseup', onDocumentMouseUp);
-
-    // Закрываем сообщение нажатием на Esc
-    var onErrorMessageEscPres = function (e) {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        main.removeChild(section);
-        document.removeEventListener('mouseup', onDocumentMouseUp);
-        document.removeEventListener('keydown', onErrorMessageEscPres);
-      }
-    };
-    document.addEventListener('keydown', onErrorMessageEscPres);
+    document.addEventListener('keydown', onMessageEscPres);
   };
 
   // Обрабатываем нажатия на клавишу Esc в форме
