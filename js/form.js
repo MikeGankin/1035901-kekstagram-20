@@ -15,6 +15,8 @@
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
   var slider = document.querySelector('.img-upload__effect-level');
+  var form = document.querySelector('.img-upload__form');
+  var main = document.querySelector('main');
 
   // Открываем форму загрузки
   var openUpload = function () {
@@ -38,6 +40,59 @@
   uploadFile.addEventListener('change', function () {
     openUpload();
   });
+
+  // Передаем данные из формы для отправки на сервер
+  form.addEventListener('submit', function (e) {
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    window.upload(new FormData(form), function onSuccess() {
+      createResponseMessage(successTemplate);
+    }, function onError(response) {
+      createResponseMessage(errorTemplate);
+      throw new Error(response);
+    });
+    closeUpload();
+    e.preventDefault();
+  });
+
+  // Генерируем сообщение пользователю
+  var createResponseMessage = function (template) {
+    var element = template.cloneNode(true);
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(element);
+    main.appendChild(fragment);
+
+    // Закрываем сообщение по клику на кнопку
+    var popupClass = template.className;
+    var popup = document.querySelector('.' + popupClass);
+    var closeButton = popup.querySelector('button');
+    closeButton.addEventListener('click', function () {
+      main.removeChild(popup);
+      document.removeEventListener('click', onDocumentMouseUp);
+      document.removeEventListener('keydown', onMessageEscPres);
+    });
+
+    // Закрываем сообщение по клику в свободную область
+    var onDocumentMouseUp = function (e) {
+      if (e.target === popup) {
+        main.removeChild(popup);
+        document.removeEventListener('click', onDocumentMouseUp);
+        document.removeEventListener('keydown', onMessageEscPres);
+      }
+    };
+    document.addEventListener('click', onDocumentMouseUp);
+
+    // Закрываем сообщение нажатием на Esc
+    var onMessageEscPres = function (e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        main.removeChild(popup);
+        document.removeEventListener('click', onDocumentMouseUp);
+        document.removeEventListener('keydown', onMessageEscPres);
+      }
+    };
+    document.addEventListener('keydown', onMessageEscPres);
+  };
 
   // Обрабатываем нажатия на клавишу Esc в форме
   var onUploadEscPress = function (e) {
@@ -63,7 +118,8 @@
   // Закрываем форму загрузки
   var closeUpload = function () {
     imgUploadOverlay.classList.add('hidden');
-    uploadFile.value = '';
+    textHashtags.value = '';
+    textDescription.value = '';
     effectsReset();
     document.removeEventListener('keydown', onUploadEscPress);
     uploadCancel.removeEventListener('keydown', onUploadEnterPress);
@@ -131,7 +187,6 @@
     var marvin = '#effect-marvin';
     var phobos = '#effect-phobos';
     var heat = '#effect-heat';
-
     effectsReset();
 
     if (!target.matches(none)) {
@@ -203,6 +258,10 @@
     if (imgUploadPreview.classList.contains('effects__preview--heat')) {
       imgUploadPreview.style = 'filter: brightness(' + brightnessValue + ')';
     }
+
+    var effectLevelValue = document.querySelector('.effect-level__value');
+    var newValue = (pinPosition * 100).toFixed();
+    effectLevelValue.setAttribute('value', newValue);
   };
 
   // Валидируем хеш-теги
@@ -258,6 +317,7 @@
   };
 
   window.form = {
-    changeEffectsIntensity: changeEffectsIntensity
+    changeEffectsIntensity: changeEffectsIntensity,
+    closeUpload: closeUpload
   };
 })();
