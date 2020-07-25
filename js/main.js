@@ -14,7 +14,7 @@
 
     // Формируем разметку фотографий по первому фильтру
     var filterRandom = document.querySelector('#filter-random');
-    var tenRndPict = window.sort.filterRandomPicturesQuantity(data, 10);
+    var tenRndPict = window.filterRandomPicturesQuantity(data, 10);
     filterRandom.addEventListener('click', function () {
       window.gallery.createGalleryElement(tenRndPict);
     });
@@ -32,7 +32,7 @@
 
     // Сохраняем данные
     pictures = data;
-    window.sort.filter(pictures);
+    window.sort(pictures);
   };
 
   window.load(onLoadSuccess, onLoadError);
