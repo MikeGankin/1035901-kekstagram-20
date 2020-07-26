@@ -32,19 +32,20 @@
       };
 
       // Формируем разметку фотографий по умолчанию
-      var onDefaultBtnClick = window.debounce(function (e) {
-        toggleButtonStyle(e.target);
+      var onDefaultBtnClick = window.debounce(function () {
         var children = document.querySelectorAll('.picture');
         children.forEach(function (item) {
           element.removeChild(item);
         });
         window.gallery.createGalleryElement(pictures);
       });
-      filterDefault.addEventListener('click', onDefaultBtnClick);
+      filterDefault.addEventListener('click', function (e) {
+        toggleButtonStyle(e.target);
+        onDefaultBtnClick();
+      });
 
       // Формируем разметку фотографий по первому фильтру
       var onRandomBtnClick = window.debounce(function (e) {
-        toggleButtonStyle(e.target);
         var tenRndPict = window.sort.sortRandomPicturesQuantity(pictures, 10);
         var children = document.querySelectorAll('.picture');
         children.forEach(function (item) {
@@ -52,11 +53,13 @@
         });
         window.gallery.createGalleryElement(tenRndPict);
       });
-      filterRandom.addEventListener('click', onRandomBtnClick);
+      filterRandom.addEventListener('click', function (e) {
+        toggleButtonStyle(e.target);
+        onRandomBtnClick();
+      });
 
       // Формируем разметку фотографий по второму фильтру
-      var onDiscussedBtnClick = window.debounce(function (e) {
-        toggleButtonStyle(e.target);
+      var onDiscussedBtnClick = window.debounce(function () {
         var discussedPict = window.sort.sortDiscussedPictures(pictures);
         var children = document.querySelectorAll('.picture');
         children.forEach(function (item) {
@@ -64,7 +67,10 @@
         });
         window.gallery.createGalleryElement(discussedPict);
       });
-      filterDiscussed.addEventListener('click', onDiscussedBtnClick);
+      filterDiscussed.addEventListener('click', function (e) {
+        toggleButtonStyle(e.target);
+        onDiscussedBtnClick();
+      });
     };
     sortPictures();
 
