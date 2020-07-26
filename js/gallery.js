@@ -24,27 +24,30 @@
     var fragment = document.createDocumentFragment();
     var comments = data.comments;
 
-    // Показываем первые 5 комментариев
-    for (var j = 0; j < 5; j++) {
+    var createCommentHtml = function (item) {
       var newComment = document.createElement('li');
       newComment.classList.add('social__comment');
       fragment.appendChild(newComment);
       var avatar = '<img class="social__picture" src="' +
-      comments[j].avatar + '"' + 'alt="' +
-      comments[j].name + '"' + 'width="35" height="35">';
-      var text = '<p class=social__text>' + comments[j].message + '</p>';
+      item.avatar + '"' + 'alt="' +
+      item.name + '"' + 'width="35" height="35">';
+      var text = '<p class=social__text>' + item.message + '</p>';
       newComment.innerHTML = avatar + text;
-    }
+      return newComment;
+    };
+
+    // Показываем первые 5 комментариев
+    comments.slice(0, 5).forEach(function (item) {
+      createCommentHtml(item);
+    });
     socialComments.appendChild(fragment);
 
     // Показываем дополнительные 5 комментариев по нажатию кнопки
     socialCommentsLoader.addEventListener('click', function chunkArray() {
-      var chunkedArray = [];
-      for (var i = 0; i < comments.length; i += 5) {
-        var myChunk = comments.slice(5, i + 5);
-        chunkedArray.push(myChunk);
-        console.log(chunkedArray);
-      }
+      comments.slice(5).forEach(function (item) {
+        createCommentHtml(item);
+      });
+      socialComments.appendChild(fragment);
     });
   };
 
