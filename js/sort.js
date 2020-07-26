@@ -5,9 +5,11 @@
 
   // 10 случайных, не повторяющихся фотографий
   window.filterRandomPicturesQuantity = function (arr, quantity) {
-    return arr.slice().sort(function () {
-      return Math.random() - 0.5;
-    }).slice(0, quantity);
+    return arr.slice()
+      .sort(function () {
+        return Math.random() - 0.5;
+      })
+      .slice(0, quantity);
   };
 
   // Фотографии, отсортированные в порядке убывания количества комментариев

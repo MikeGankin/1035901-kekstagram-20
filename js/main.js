@@ -20,21 +20,13 @@
     var filterDiscussed = document.querySelector('#filter-discussed');
     var element = window.gallery.pictures;
 
-    // Получаем количество фотографий
-    // var getChildren = function () {
-    //   var children = document.querySelectorAll('.picture');
-    //   return children;
-    // };
-
     // Формируем разметку фотографий по умолчанию
     filterDefault.addEventListener('click', function () {
       var children = document.querySelectorAll('.picture');
       for (var i = 0; i < children.length; i++) {
         element.removeChild(children[i]);
       }
-      setTimeout(function () {
-        window.gallery.createGalleryElement(pictures);
-      }, 500);
+      window.debounce(window.gallery.createGalleryElement(pictures));
     });
 
     // Формируем разметку фотографий по первому фильтру
@@ -44,21 +36,17 @@
       for (var i = 0; i < children.length; i++) {
         element.removeChild(children[i]);
       }
-      setTimeout(function () {
-        window.gallery.createGalleryElement(tenRndPict);
-      }, 500);
+      window.debounce(window.gallery.createGalleryElement(tenRndPict));
     });
 
-    // Формируем разметку фотографий по первому фильтру
+    // Формируем разметку фотографий по второму фильтру
     var discussedPict = window.filterDiscussedPictures(pictures);
     filterDiscussed.addEventListener('click', function () {
       var children = document.querySelectorAll('.picture');
       for (var i = 0; i < children.length; i++) {
         element.removeChild(children[i]);
       }
-      setTimeout(function () {
-        window.gallery.createGalleryElement(discussedPict);
-      }, 500);
+      window.debounce(window.gallery.createGalleryElement(discussedPict));
     });
 
     // Реализуем показ больших фотографий
