@@ -49,7 +49,17 @@
       }, 500);
     });
 
+    // Формируем разметку фотографий по первому фильтру
     var discussedPict = window.filterDiscussedPictures(pictures);
+    filterDiscussed.addEventListener('click', function () {
+      var children = document.querySelectorAll('.picture');
+      for (var i = 0; i < children.length; i++) {
+        element.removeChild(children[i]);
+      }
+      setTimeout(function () {
+        window.gallery.createGalleryElement(discussedPict);
+      }, 500);
+    });
 
     // Реализуем показ больших фотографий
     var picturesHandler = function (e) {
