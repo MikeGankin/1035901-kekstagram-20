@@ -45,7 +45,7 @@
       });
 
       // Формируем разметку фотографий по первому фильтру
-      var onRandomBtnClick = window.debounce(function (e) {
+      var onRandomBtnClick = window.debounce(function () {
         var tenRndPict = window.sort.sortRandomPicturesQuantity(pictures, 10);
         var children = document.querySelectorAll('.picture');
         children.forEach(function (item) {
