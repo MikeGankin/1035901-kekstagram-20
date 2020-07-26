@@ -19,20 +19,8 @@
     });
   };
 
-  // Комментарии, по 5 штук
-  function chunkArray(arr) {
-    var chunkedArray = [];
-    for (var i = 0; i < arr.length; i += 5) {
-      var myChunk = arr.slice(i, i + 5);
-      chunkedArray.push(myChunk);
-    }
-    console.log(chunkedArray);
-    return chunkedArray;
-  }
-
   window.sort = {
     sortRandomPicturesQuantity: sortRandomPicturesQuantity,
-    sortDiscussedPictures: sortDiscussedPictures,
-    chunkArray: chunkArray
+    sortDiscussedPictures: sortDiscussedPictures
   };
 })();

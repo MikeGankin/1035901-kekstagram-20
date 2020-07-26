@@ -20,19 +20,32 @@
   // Генерируем новую разметку комментариев под фотографией
   var generateNewComments = function (data) {
     var socialComments = document.querySelector('.social__comments');
+    var socialCommentsLoader = document.querySelector('.social__comments-loader');
     var fragment = document.createDocumentFragment();
     var comments = data.comments;
-    for (var i = 0; i < comments.length; i++) {
+
+    // Показываем первые 5 комментариев
+    for (var j = 0; j < 5; j++) {
       var newComment = document.createElement('li');
       newComment.classList.add('social__comment');
       fragment.appendChild(newComment);
       var avatar = '<img class="social__picture" src="' +
-          comments[i].avatar + '"' + 'alt="' +
-          comments[i].name + '"' + 'width="35" height="35">';
-      var text = '<p class=social__text>' + comments[i].message + '</p>';
+      comments[j].avatar + '"' + 'alt="' +
+      comments[j].name + '"' + 'width="35" height="35">';
+      var text = '<p class=social__text>' + comments[j].message + '</p>';
       newComment.innerHTML = avatar + text;
     }
     socialComments.appendChild(fragment);
+
+    // Показываем дополнительные 5 комментариев по нажатию кнопки
+    socialCommentsLoader.addEventListener('click', function chunkArray() {
+      var chunkedArray = [];
+      for (var i = 0; i < comments.length; i += 5) {
+        var myChunk = comments.slice(5, i + 5);
+        chunkedArray.push(myChunk);
+        console.log(chunkedArray);
+      }
+    });
   };
 
   window.gallery = {
