@@ -74,6 +74,9 @@
     };
     sortPictures();
 
+    // Сортируем комментарии
+    window.sort.chunkArray(pictures);
+
     // Реализуем показ больших фотографий
     var picturesHandler = function (e) {
       var target = e.target.closest('.picture');
