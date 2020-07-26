@@ -4,7 +4,7 @@
   imgFilters.classList.remove('img-filters--inactive');
 
   // 10 случайных, не повторяющихся фотографий
-  window.filterRandomPicturesQuantity = function (arr, quantity) {
+  var sortRandomPicturesQuantity = function (arr, quantity) {
     return arr.slice()
       .sort(function () {
         return Math.random() - 0.5;
@@ -13,9 +13,14 @@
   };
 
   // Фотографии, отсортированные в порядке убывания количества комментариев
-  window.filterDiscussedPictures = function (arr) {
+  var sortDiscussedPictures = function (arr) {
     return arr.slice().sort(function (first, second) {
       return second.comments.length - first.comments.length;
     });
+  };
+
+  window.sort = {
+    sortRandomPicturesQuantity: sortRandomPicturesQuantity,
+    sortDiscussedPictures: sortDiscussedPictures
   };
 })();

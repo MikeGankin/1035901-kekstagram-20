@@ -15,39 +15,58 @@
     // Передаем данные в галерею
     window.gallery.createGalleryElement(pictures);
 
-    var filterDefault = document.querySelector('#filter-default');
-    var filterRandom = document.querySelector('#filter-random');
-    var filterDiscussed = document.querySelector('#filter-discussed');
-    var element = window.gallery.pictures;
+    // Сортируем фотографии
+    var sortPictures = function () {
+      var filterDefault = document.querySelector('#filter-default');
+      var filterRandom = document.querySelector('#filter-random');
+      var filterDiscussed = document.querySelector('#filter-discussed');
+      var element = window.gallery.pictures;
 
-    // Формируем разметку фотографий по умолчанию
-    filterDefault.addEventListener('click', function () {
-      var children = document.querySelectorAll('.picture');
-      for (var i = 0; i < children.length; i++) {
-        element.removeChild(children[i]);
-      }
-      window.debounce(window.gallery.createGalleryElement(pictures));
-    });
+      // Меняем стили переключателей
+      var toggleButtonStyle = function (btn) {
+        var filters = document.querySelectorAll('.img-filters__button');
+        filters.forEach(function (item) {
+          item.classList.remove('img-filters__button--active');
+        });
+        btn.classList.add('img-filters__button--active');
+      };
 
-    // Формируем разметку фотографий по первому фильтру
-    var tenRndPict = window.filterRandomPicturesQuantity(pictures, 10);
-    filterRandom.addEventListener('click', function () {
-      var children = document.querySelectorAll('.picture');
-      for (var i = 0; i < children.length; i++) {
-        element.removeChild(children[i]);
-      }
-      window.debounce(window.gallery.createGalleryElement(tenRndPict));
-    });
+      // Формируем разметку фотографий по умолчанию
+      var onDefaultBtnClick = window.debounce(function (e) {
+        toggleButtonStyle(e.target);
+        var children = document.querySelectorAll('.picture');
+        children.forEach(function (item) {
+          element.removeChild(item);
+        });
+        window.gallery.createGalleryElement(pictures);
+      });
+      filterDefault.addEventListener('click', onDefaultBtnClick);
 
-    // Формируем разметку фотографий по второму фильтру
-    var discussedPict = window.filterDiscussedPictures(pictures);
-    filterDiscussed.addEventListener('click', function () {
-      var children = document.querySelectorAll('.picture');
-      for (var i = 0; i < children.length; i++) {
-        element.removeChild(children[i]);
-      }
-      window.debounce(window.gallery.createGalleryElement(discussedPict));
-    });
+      // Формируем разметку фотографий по первому фильтру
+      var onRandomBtnClick = window.debounce(function (e) {
+        toggleButtonStyle(e.target);
+        var tenRndPict = window.sort.sortRandomPicturesQuantity(pictures, 10);
+        var children = document.querySelectorAll('.picture');
+        children.forEach(function (item) {
+          element.removeChild(item);
+        });
+        window.gallery.createGalleryElement(tenRndPict);
+      });
+      filterRandom.addEventListener('click', onRandomBtnClick);
+
+      // Формируем разметку фотографий по второму фильтру
+      var onDiscussedBtnClick = window.debounce(function (e) {
+        toggleButtonStyle(e.target);
+        var discussedPict = window.sort.sortDiscussedPictures(pictures);
+        var children = document.querySelectorAll('.picture');
+        children.forEach(function (item) {
+          element.removeChild(item);
+        });
+        window.gallery.createGalleryElement(discussedPict);
+      });
+      filterDiscussed.addEventListener('click', onDiscussedBtnClick);
+    };
+    sortPictures();
 
     // Реализуем показ больших фотографий
     var picturesHandler = function (e) {
