@@ -9,17 +9,49 @@
   var pictures = [];
 
   var onLoadSuccess = function (data) {
-    // Формируем разметку фотографий по умолчанию
-    window.gallery.createGalleryElement(data);
+    // Сохраняем данные
+    pictures = data;
 
-    // Формируем разметку фотографий по первому фильтру
+    // Передаем данные в галерею
+    window.gallery.createGalleryElement(pictures);
+
+    var filterDefault = document.querySelector('#filter-default');
     var filterRandom = document.querySelector('#filter-random');
-    var tenRndPict = window.filterRandomPicturesQuantity(data, 10);
-    filterRandom.addEventListener('click', function () {
-      window.gallery.createGalleryElement(tenRndPict);
+    var filterDiscussed = document.querySelector('#filter-discussed');
+    var element = window.gallery.pictures;
+
+    // Получаем количество фотографий
+    // var getChildren = function () {
+    //   var children = document.querySelectorAll('.picture');
+    //   return children;
+    // };
+
+    // Формируем разметку фотографий по умолчанию
+    filterDefault.addEventListener('click', function () {
+      var children = document.querySelectorAll('.picture');
+      for (var i = 0; i < children.length; i++) {
+        element.removeChild(children[i]);
+      }
+      setTimeout(function () {
+        window.gallery.createGalleryElement(pictures);
+      }, 500);
     });
 
-    // Реализуем показ всех фотографий
+    // Формируем разметку фотографий по первому фильтру
+    var tenRndPict = window.filterRandomPicturesQuantity(pictures, 10);
+    filterRandom.addEventListener('click', function () {
+      var children = document.querySelectorAll('.picture');
+      for (var i = 0; i < children.length; i++) {
+        element.removeChild(children[i]);
+      }
+      setTimeout(function () {
+        window.gallery.createGalleryElement(tenRndPict);
+      }, 500);
+    });
+
+    var discussedPict = window.filterDiscussedPictures(pictures);
+
+    // Реализуем показ больших фотографий
     var picturesHandler = function (e) {
       var target = e.target.closest('.picture');
       if (target) {
@@ -29,10 +61,6 @@
 
     // Событие клика по миниатюре фотографии
     window.gallery.pictures.addEventListener('click', picturesHandler);
-
-    // Сохраняем данные
-    pictures = data;
-    window.sort(pictures);
   };
 
   window.load(onLoadSuccess, onLoadError);
