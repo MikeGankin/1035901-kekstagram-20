@@ -10,10 +10,8 @@
     var likesCount = document.querySelector('.likes-count');
     var commentsCount = document.querySelector('.comments-count');
     var socialComments = document.querySelector('.social__comments');
-    var socialCommentCount = document.querySelector('.social__comment-count');
     var socialCaption = document.querySelector('.social__caption');
     showCard();
-    socialCommentCount.classList.add('hidden');
     bigPictureImg.src = data.url;
     likesCount.textContent = data.likes;
     commentsCount.textContent = data.comments.length;

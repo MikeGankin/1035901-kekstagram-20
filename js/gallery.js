@@ -21,6 +21,7 @@
   var generateNewComments = function (data) {
     var socialComments = document.querySelector('.social__comments');
     var socialCommentsLoader = document.querySelector('.social__comments-loader');
+    var baseCount = document.querySelector('.base-count');
     var fragment = document.createDocumentFragment();
     var comments = data.comments;
 
@@ -36,22 +37,34 @@
       return newComment;
     };
 
+    var count = 0;
+
     // Показываем первые 5 комментариев
     comments.slice(0, 5).forEach(function (item) {
       createCommentHtml(item);
+      count++;
     });
     socialComments.appendChild(fragment);
 
+    baseCount.textContent = count;
+
     if (comments.length <= 5) {
       socialCommentsLoader.classList.add('hidden');
+    } else {
+      socialCommentsLoader.classList.remove('hidden');
     }
 
     // Показываем дополнительные 5 комментариев по нажатию кнопки
     socialCommentsLoader.addEventListener('click', function chunkArray() {
-      comments.slice(5).forEach(function (item) {
+      comments.slice(count, count + 5).forEach(function (item) {
         createCommentHtml(item);
+        count++;
       });
+      baseCount.textContent = count;
       socialComments.appendChild(fragment);
+      if (count === comments.length) {
+        socialCommentsLoader.classList.add('hidden');
+      }
     });
   };
 
