@@ -42,6 +42,10 @@
     });
     socialComments.appendChild(fragment);
 
+    if (comments.length <= 5) {
+      socialCommentsLoader.classList.add('hidden');
+    }
+
     // Показываем дополнительные 5 комментариев по нажатию кнопки
     socialCommentsLoader.addEventListener('click', function chunkArray() {
       comments.slice(5).forEach(function (item) {
