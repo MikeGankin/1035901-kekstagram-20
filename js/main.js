@@ -9,6 +9,7 @@
   var pictures = [];
 
   var onLoadSuccess = function (data) {
+    console.log(data);
     // Сохраняем данные
     pictures = data;
 
@@ -37,7 +38,7 @@
         children.forEach(function (item) {
           element.removeChild(item);
         });
-        window.gallery.createGalleryElement(pictures);
+        window.gallery.createGalleryPicture(pictures);
       });
       filterDefault.addEventListener('click', function (e) {
         toggleButtonStyle(e.target);
@@ -78,7 +79,7 @@
     var onSmallPicturesClick = function (e) {
       var target = e.target.closest('.picture');
       if (target) {
-        window.preview.renderBigCard(data[target.dataset.order]);
+        window.preview.renderBigCard(pictures[target.dataset.order]);
       }
     };
 
