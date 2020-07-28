@@ -11,6 +11,9 @@
   var onLoadSuccess = function (data) {
     // Сохраняем данные
     pictures = data;
+    window.main = {
+      pictures: pictures
+    };
 
     // Передаем данные в галерею
     window.gallery.createGalleryPicture(pictures);
@@ -87,4 +90,6 @@
   };
 
   window.server.load(onLoadSuccess, onLoadError);
+
+  window.main = {};
 })();

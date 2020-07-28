@@ -4,7 +4,7 @@
   var effectLevelPin = document.querySelector('.effect-level__pin');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
 
-  var effectLevelHandler = function (e) {
+  var onEffectLevelMove = function (e) {
     e.preventDefault();
 
     var width = effectLevelLine.clientWidth;
@@ -64,6 +64,6 @@
   };
 
   window.move = {
-    effectLevelHandler: effectLevelHandler
+    onEffectLevelMove: onEffectLevelMove
   };
 })();

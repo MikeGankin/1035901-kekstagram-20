@@ -30,7 +30,7 @@
     textHashtags.addEventListener('input', validateHashtags);
     textDescription.addEventListener('input', validateDescription);
     // Событие переключения эффектов
-    effectsList.addEventListener('change', changeEffectsHandler);
+    effectsList.addEventListener('change', onEffectsChange);
     // События редактирования размера изображения
     smaller.addEventListener('click', onDecreaseScaleValueClick);
     scaler.addEventListener('click', onIncreaseScaleValueClick);
@@ -127,7 +127,7 @@
     uploadCancel.removeEventListener('click', onUploadCancelClick);
     textHashtags.removeEventListener('input', validateHashtags);
     textDescription.removeEventListener('input', validateDescription);
-    effectsList.addEventListener('change', changeEffectsHandler);
+    effectsList.addEventListener('change', onEffectsChange);
     smaller.removeEventListener('click', onDecreaseScaleValueClick);
     scaler.removeEventListener('click', onIncreaseScaleValueClick);
   };
@@ -192,7 +192,7 @@
 
     if (!target.matches(none)) {
       slider.classList.remove('hidden');
-      effectLevelPin.addEventListener('mousedown', window.move.effectLevelHandler);
+      effectLevelPin.addEventListener('mousedown', window.move.onEffectLevelMove);
       changeEffectsIntensity(takePinPosition());
     } else {
       keepSlider();
@@ -223,7 +223,7 @@
   };
 
   // Обрабатываем переключение эффектов
-  var changeEffectsHandler = function (e) {
+  var onEffectsChange = function (e) {
     var target = e.target;
     changeEffects(target);
   };
@@ -269,6 +269,12 @@
   var validateHashtags = function () {
     var reg = /^#[0-9a-zA-Zа-яА-Я]+$/;
     var hashtagsArr = textHashtags.value.trim().toLowerCase().split(' ');
+
+    if (hashtagsArr.length > 5) {
+      textHashtags.setCustomValidity('Максимальное количество хеш-тегов 5');
+      textHashtags.reportValidity();
+    }
+
     for (var i = 0; i < hashtagsArr.length; i++) {
       if (hashtagsArr[i] === '') {
         continue;
@@ -278,10 +284,6 @@
         return;
       } else if (hashtagsArr[i].length > 20) {
         textHashtags.setCustomValidity('Хеш-тег не должен быть длиннее 20 символов');
-        textHashtags.reportValidity();
-        return;
-      } else if (hashtagsArr.length > 5) {
-        textHashtags.setCustomValidity('Максимальное количество хеш-тегов 5');
         textHashtags.reportValidity();
         return;
       } else if (hashtagsArr[i].length <= 1) {
@@ -295,8 +297,9 @@
       } else if (hashtagsArr[i].search(reg) === -1) {
         textHashtags.setCustomValidity('Хеш-теги пишутся через пробел и могут состоять только из букв и цифр');
         textHashtags.reportValidity();
+        return;
       }
-      return;
+      textHashtags.setCustomValidity('');
     }
   };
 
@@ -308,7 +311,7 @@
       textDescription.reportValidity();
       textDescription.setCustomValidity('Количество символов не должно превышать 140');
     } else {
-      textHashtags.setCustomValidity('');
+      textDescription.setCustomValidity('');
     }
   };
 

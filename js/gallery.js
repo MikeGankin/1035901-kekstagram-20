@@ -8,7 +8,7 @@
     var fragment = document.createDocumentFragment();
     data.forEach(function (item) {
       var element = template.cloneNode(true);
-      var elementIndex = data.indexOf(item);
+      var elementIndex = window.main.pictures.indexOf(item);
       element.setAttribute('data-order', elementIndex);
       element.querySelector('.picture__img').src = item.url;
       element.querySelector('.picture__comments').textContent = item.comments.length;
