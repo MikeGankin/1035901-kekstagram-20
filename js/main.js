@@ -9,7 +9,6 @@
   var pictures = [];
 
   var onLoadSuccess = function (data) {
-    console.log(data);
     // Сохраняем данные
     pictures = data;
 
