@@ -13,7 +13,7 @@
     pictures = data;
 
     // Передаем данные в галерею
-    window.gallery.createGalleryElement(pictures);
+    window.gallery.createGalleryPicture(pictures);
 
     // Сортируем фотографии
     var sortPictures = function () {
@@ -51,7 +51,7 @@
         children.forEach(function (item) {
           element.removeChild(item);
         });
-        window.gallery.createGalleryElement(tenRndPict);
+        window.gallery.createGalleryPicture(tenRndPict);
       });
       filterRandom.addEventListener('click', function (e) {
         toggleButtonStyle(e.target);
@@ -75,7 +75,7 @@
     sortPictures();
 
     // Реализуем показ больших фотографий
-    var picturesHandler = function (e) {
+    var onSmallPicturesClick = function (e) {
       var target = e.target.closest('.picture');
       if (target) {
         window.preview.renderBigCard(data[target.dataset.order]);
@@ -83,8 +83,8 @@
     };
 
     // Событие клика по миниатюре фотографии
-    window.gallery.pictures.addEventListener('click', picturesHandler);
+    window.gallery.pictures.addEventListener('click', onSmallPicturesClick);
   };
 
-  window.load(onLoadSuccess, onLoadError);
+  window.server.load(onLoadSuccess, onLoadError);
 })();

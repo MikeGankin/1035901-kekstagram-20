@@ -3,18 +3,18 @@
 (function () {
   var pictures = document.querySelector('.pictures');
   // Генерируем шаблонные элементы
-  var createGalleryElement = function (data) {
+  var createGalleryPicture = function (data) {
     var template = document.querySelector('#picture').content.querySelector('.picture');
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < data.length; i++) {
+    data.forEach(function (item) {
       var element = template.cloneNode(true);
-      element.setAttribute('data-order', i);
-      element.querySelector('.picture__img').src = data[i].url;
-      element.querySelector('.picture__comments').textContent = data[i].comments.length;
-      element.querySelector('.picture__likes').textContent = data[i].likes;
+      element.setAttribute('data-order', item);
+      element.querySelector('.picture__img').src = item.url;
+      element.querySelector('.picture__comments').textContent = item.comments.length;
+      element.querySelector('.picture__likes').textContent = item.likes;
       fragment.appendChild(element);
       pictures.appendChild(fragment);
-    }
+    });
   };
 
   // Генерируем новую разметку комментариев под фотографией
@@ -55,7 +55,7 @@
     }
 
     // Показываем дополнительные 5 комментариев по нажатию кнопки
-    socialCommentsLoader.addEventListener('click', function chunkArray() {
+    socialCommentsLoader.addEventListener('click', function () {
       comments.slice(count, count + 5).forEach(function (item) {
         createCommentHtml(item);
         count++;
@@ -71,6 +71,6 @@
   window.gallery = {
     pictures: pictures,
     generateNewComments: generateNewComments,
-    createGalleryElement: createGalleryElement
+    createGalleryPicture: createGalleryPicture
   };
 })();

@@ -27,13 +27,13 @@
     // Событие закрытия окна загрузки
     uploadCancel.addEventListener('click', onUploadCancelClick);
     // События валидации
-    textHashtags.addEventListener('input', hashtagsCustomValidation);
-    textDescription.addEventListener('input', descriptionCustomValidation);
+    textHashtags.addEventListener('input', validateHashtags);
+    textDescription.addEventListener('input', validateDescription);
     // Событие переключения эффектов
     effectsList.addEventListener('change', changeEffectsHandler);
     // События редактирования размера изображения
-    smaller.addEventListener('click', decreaseScaleValueHandler);
-    scaler.addEventListener('click', increaseScaleValueHandler);
+    smaller.addEventListener('click', onDecreaseScaleValueClick);
+    scaler.addEventListener('click', onIncreaseScaleValueClick);
   };
 
   // Событие открытия формы загрузки
@@ -45,7 +45,7 @@
   form.addEventListener('submit', function (e) {
     var successTemplate = document.querySelector('#success').content.querySelector('.success');
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-    window.upload(new FormData(form), function onSuccess() {
+    window.server.upload(new FormData(form), function onSuccess() {
       createResponseMessage(successTemplate);
     }, function onError(response) {
       createResponseMessage(errorTemplate);
@@ -120,15 +120,16 @@
     imgUploadOverlay.classList.add('hidden');
     textHashtags.value = '';
     textDescription.value = '';
-    effectsReset();
+    uploadFile.value = '';
+    resetEffects();
     document.removeEventListener('keydown', onUploadEscPress);
     uploadCancel.removeEventListener('keydown', onUploadEnterPress);
     uploadCancel.removeEventListener('click', onUploadCancelClick);
-    textHashtags.removeEventListener('input', hashtagsCustomValidation);
-    textDescription.removeEventListener('input', descriptionCustomValidation);
+    textHashtags.removeEventListener('input', validateHashtags);
+    textDescription.removeEventListener('input', validateDescription);
     effectsList.addEventListener('change', changeEffectsHandler);
-    smaller.removeEventListener('click', decreaseScaleValueHandler);
-    scaler.removeEventListener('click', increaseScaleValueHandler);
+    smaller.removeEventListener('click', onDecreaseScaleValueClick);
+    scaler.removeEventListener('click', onIncreaseScaleValueClick);
   };
 
   // Задаем размер фотографии по умолчанию
@@ -149,12 +150,12 @@
   };
 
   // Обрабатываем клик по кнопке уменьшения
-  var decreaseScaleValueHandler = function () {
+  var onDecreaseScaleValueClick = function () {
     decreaseScaleValue();
   };
 
   // Обрабатываем клик по кнопке увеличения
-  var increaseScaleValueHandler = function () {
+  var onIncreaseScaleValueClick = function () {
     increaseScaleValue();
   };
 
@@ -187,7 +188,7 @@
     var marvin = '#effect-marvin';
     var phobos = '#effect-phobos';
     var heat = '#effect-heat';
-    effectsReset();
+    resetEffects();
 
     if (!target.matches(none)) {
       slider.classList.remove('hidden');
@@ -214,7 +215,7 @@
   };
 
   // Сбрасываем эффект
-  var effectsReset = function () {
+  var resetEffects = function () {
     imgUploadPreview.className = '';
     imgUploadPreview.style = '';
     effectLevelPin.style.left = '453px';
@@ -265,10 +266,9 @@
   };
 
   // Валидируем хеш-теги
-  var hashtagsCustomValidation = function () {
+  var validateHashtags = function () {
     var reg = /^#[0-9a-zA-Zа-яА-Я]+$/;
     var hashtagsArr = textHashtags.value.trim().toLowerCase().split(' ');
-
     for (var i = 0; i < hashtagsArr.length; i++) {
       if (hashtagsArr[i] === '') {
         continue;
@@ -295,24 +295,20 @@
       } else if (hashtagsArr[i].search(reg) === -1) {
         textHashtags.setCustomValidity('Хеш-теги пишутся через пробел и могут состоять только из букв и цифр');
         textHashtags.reportValidity();
-        return;
-      } else {
-        textHashtags.setCustomValidity('');
       }
+      return;
     }
   };
 
   // Валидируем описание
-  var descriptionCustomValidation = function () {
+  var validateDescription = function () {
     var descriptionArr = textDescription.value.toLowerCase();
 
-    for (var i = 0; i < descriptionArr.length; i++) {
-      if (descriptionArr.length > 140) {
-        textDescription.reportValidity();
-        textDescription.setCustomValidity('Количество символов не должно превышать 140');
-      } else {
-        textHashtags.setCustomValidity('');
-      }
+    if (descriptionArr.length > 140) {
+      textDescription.reportValidity();
+      textDescription.setCustomValidity('Количество символов не должно превышать 140');
+    } else {
+      textHashtags.setCustomValidity('');
     }
   };
 
