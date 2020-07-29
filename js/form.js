@@ -124,7 +124,7 @@
     textHashtags.setCustomValidity('');
     textDescription.setCustomValidity('');
     resetEffects();
-    setScaleValue();
+    resetScaleValue();
     document.removeEventListener('keydown', onUploadEscPress);
     uploadCancel.removeEventListener('keydown', onUploadEnterPress);
     uploadCancel.removeEventListener('click', onUploadCancelClick);
@@ -136,10 +136,11 @@
   };
 
   // Задаем размер фотографии по умолчанию
-  var setScaleValue = function () {
+  var resetScaleValue = function () {
     scaleControlValue.setAttribute('value', '100%');
+    imgUploadPreview.style.transform = 'scale(1)';
   };
-  setScaleValue();
+  resetScaleValue();
 
   // Уменьшаем размер фотографии
   var decreaseScaleValue = function () {
@@ -229,7 +230,7 @@
   var onEffectsChange = window.debounce(function (e) {
     var target = e.target;
     changeEffects(target);
-    setScaleValue();
+    resetScaleValue();
   });
 
   // Получаем позицию пина
