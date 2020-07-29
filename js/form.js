@@ -148,7 +148,7 @@
     if (newNumber >= 25) {
       var newString = String(newNumber) + '%';
       scaleControlValue.setAttribute('value', newString);
-      imgUploadPreview.style = 'transform: scale(0.' + newNumber + ')';
+      imgUploadPreview.style.transform = 'scale(0.' + newNumber + ')';
     }
   };
 
@@ -170,9 +170,9 @@
       var newString = String(newNumber) + '%';
       scaleControlValue.setAttribute('value', newString);
       if (newNumber === 100) {
-        imgUploadPreview.style = 'transform: scale(1)';
+        imgUploadPreview.style.transform = 'scale(1)';
       } else {
-        imgUploadPreview.style = 'transform: scale(0.' + newNumber + ')';
+        imgUploadPreview.style.transform = 'scale(0.' + newNumber + ')';
       }
     }
   };
@@ -220,7 +220,7 @@
   // Сбрасываем эффект
   var resetEffects = function () {
     imgUploadPreview.className = '';
-    imgUploadPreview.style = '';
+    imgUploadPreview.style.filter = '';
     effectLevelPin.style.left = '453px';
     effectLevelDepth.style.width = '453px';
   };
@@ -249,19 +249,19 @@
     var brightnessValue = (fraction * 2) + 1;
 
     if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
-      imgUploadPreview.style = 'filter: grayscale(' + fraction + ')';
+      imgUploadPreview.style.filter = 'grayscale(' + fraction + ')';
     }
     if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
-      imgUploadPreview.style = 'filter: sepia(' + fraction + ')';
+      imgUploadPreview.style.filter = 'sepia(' + fraction + ')';
     }
     if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
-      imgUploadPreview.style = 'filter: invert(' + percent + ')';
+      imgUploadPreview.style.filter = 'invert(' + percent + ')';
     }
     if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
-      imgUploadPreview.style = 'filter: blur(' + pixel + ')';
+      imgUploadPreview.style.filter = 'blur(' + pixel + ')';
     }
     if (imgUploadPreview.classList.contains('effects__preview--heat')) {
-      imgUploadPreview.style = 'filter: brightness(' + brightnessValue + ')';
+      imgUploadPreview.style.filter = 'brightness(' + brightnessValue + ')';
     }
 
     var effectLevelValue = document.querySelector('.effect-level__value');
