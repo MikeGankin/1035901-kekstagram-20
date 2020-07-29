@@ -68,7 +68,7 @@
         children.forEach(function (item) {
           element.removeChild(item);
         });
-        window.gallery.createGalleryElement(discussedPict);
+        window.gallery.createGalleryPicture(discussedPict);
       });
       filterDiscussed.addEventListener('click', function (e) {
         toggleButtonStyle(e.target);

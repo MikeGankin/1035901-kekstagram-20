@@ -121,7 +121,10 @@
     textHashtags.value = '';
     textDescription.value = '';
     uploadFile.value = '';
+    textHashtags.setCustomValidity('');
+    textDescription.setCustomValidity('');
     resetEffects();
+    setScaleValue();
     document.removeEventListener('keydown', onUploadEscPress);
     uploadCancel.removeEventListener('keydown', onUploadEnterPress);
     uploadCancel.removeEventListener('click', onUploadCancelClick);
@@ -223,10 +226,11 @@
   };
 
   // Обрабатываем переключение эффектов
-  var onEffectsChange = function (e) {
+  var onEffectsChange = window.debounce(function (e) {
     var target = e.target;
     changeEffects(target);
-  };
+    setScaleValue();
+  });
 
   // Получаем позицию пина
   var takePinPosition = function () {
